@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- ============================ SEO ============================ -->
+<title>Richard van Zyl — Solutions Architecture &amp; Backend Engineering</title>
+<meta name="description" content="Richard van Zyl — Solutions Architect and Technical Lead in Pretoria, South Africa. I build high-throughput, multi-tenant financial systems where data integrity is non-negotiable: C#/.NET, SQL Server at scale, concurrency and ledger design.">
+<meta name="author" content="Richard van Zyl">
+<meta name="theme-color" content="#0B1512">
+<link rel="canonical" href="https://richardvzyl.github.io/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Richard van Zyl — Solutions Architect &amp; Technical Lead">
+<meta property="og:description" content="High-throughput, multi-tenant financial systems where data integrity is non-negotiable. Concurrency, ledger integrity and SQL Server at scale. Pretoria, South Africa.">
+<meta property="og:url" content="https://richardvzyl.github.io/">
+<meta property="og:site_name" content="Richard van Zyl">
+<meta property="profile:first_name" content="Richard">
+<meta property="profile:last_name" content="van Zyl">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Richard van Zyl — Solutions Architect &amp; Technical Lead">
+<meta name="twitter:description" content="High-throughput, multi-tenant financial systems where data integrity is non-negotiable.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Richard van Zyl",
+  "url": "https://richardvzyl.github.io/",
+  "email": "mailto:richardvzyl@gmail.com",
+  "jobTitle": "Solutions Architect / Technical Lead",
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "degree",
+      "name": "National Diploma in Information Technology: Software Development"
+    }
+  ],
+  "alumniOf": { "@type": "EducationalOrganization", "name": "Varsity College" },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Pretoria",
+    "addressRegion": "Gauteng",
+    "addressCountry": "ZA"
+  },
+  "knowsAbout": [
+    "Solution Architecture", "Software Architecture", "C#", ".NET", "ASP.NET Core",
+    "SQL Server", "Azure SQL", "T-SQL", "Entity Framework Core",
+    "Multi-tenant Architecture", "Concurrency Control", "Idempotency",
+    "Financial Systems", "Payment Integration", "Database Partitioning",
+    "Domain-Driven Design", "CQRS", "Requirements Analysis", "Business Analysis",
+    "Agentic AI", "Model Context Protocol"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/richardvzyl/",
+    "https://github.com/RichardvZyl"
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0B1512;
+  --panel:#0F1D19;
+  --slate:#5C6B6B;
+  --brass:#C8A24B;
+  --brass-hi:#E4C877;
+  --living:#42D6B4;
+  --paper:#EDE9DF;
+  --muted:#8A9691;
+  --line:rgba(200,162,75,0.16);
+  --line-soft:rgba(237,233,223,0.08);
+
+  --display:"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --body:"Geist", ui-sans-serif, -apple-system, system-ui, sans-serif;
+  --mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --pad: clamp(20px, 5vw, 88px);
+  --maxw: 1240px;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+body{
+  font-family:var(--body);
+  background:var(--void);
+  color:var(--paper);
+  line-height:1.6;
+  font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+::selection{ background:var(--brass); color:#0B1512; }
+a{ color:inherit; text-decoration:none; }
+
+/* ---------- fixed WebGL layer + graceful fallback ---------- */
+#bg{
+  position:fixed; inset:0; width:100%; height:100%;
+  z-index:0; display:block;
+  background:
+    radial-gradient(120% 90% at 70% 10%, rgba(66,214,180,0.10), transparent 45%),
+    radial-gradient(120% 120% at 20% 90%, rgba(200,162,75,0.12), transparent 50%),
+    #0B1512;
+}
+.grain{
+  position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+/* ---------- shell ---------- */
+.wrap{ position:relative; z-index:2; }
+.bar{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad); }
+
+/* ---------- nav ---------- */
+header{
+  position:fixed; top:0; left:0; right:0; z-index:30;
+  transition:background .4s ease, backdrop-filter .4s ease, border-color .4s ease;
+  border-bottom:1px solid transparent;
+}
+header.stuck{
+  background:rgba(11,21,18,0.72);
+  backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav{ display:flex; align-items:center; justify-content:space-between; height:74px; }
+.mark{
+  font-family:var(--mono); font-weight:500; letter-spacing:.02em;
+  font-size:13px; color:var(--paper); display:flex; align-items:center; gap:9px;
+}
+.mark .dot{ width:7px; height:7px; border-radius:50%; background:var(--living); box-shadow:0 0 12px var(--living); }
+.menu{ display:flex; gap:6px; align-items:center; }
+.menu a{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--muted); padding:9px 13px; border-radius:100px; transition:color .25s ease, background .25s ease;
+  position:relative;
+}
+.menu a:hover{ color:var(--paper); }
+.menu a.on{ color:var(--brass-hi); }
+.menu a.cta{ color:#0B1512; background:var(--brass); }
+.menu a.cta:hover{ background:var(--brass-hi); color:#0B1512; }
+.burger{ display:none; }
+
+/* ---------- hero ---------- */
+.hero{
+  min-height:100svh; display:flex; flex-direction:column; justify-content:center;
+  padding-block:120px 40px; position:relative;
+}
+.eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:.34em; text-transform:uppercase;
+  color:var(--brass); display:flex; align-items:center; gap:14px; margin-bottom:26px;
+}
+.eyebrow::before{ content:""; width:46px; height:1px; background:var(--brass); opacity:.7; }
+.reveal-line{ overflow:hidden; display:block; }
+.reveal-line > span{ display:block; transform:translateY(115%); transition:transform 1s cubic-bezier(.16,1,.3,1); }
+.loaded .reveal-line > span{ transform:translateY(0); }
+h1{
+  font-family:var(--display); font-weight:700;
+  font-size:clamp(3.3rem, 12.5vw, 9.4rem); line-height:.92; letter-spacing:-.03em;
+  margin-bottom:30px;
+}
+h1 .sur{ color:var(--brass); }
+.thesis{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(1.35rem, 3.4vw, 2.5rem); line-height:1.16; letter-spacing:-.015em;
+  max-width:19ch; color:var(--paper);
+}
+.thesis em{ font-style:italic; color:var(--brass-hi); }
+.herometa{
+  display:flex; flex-wrap:wrap; gap:12px 30px; margin-top:44px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--muted);
+  opacity:0; transition:opacity 1s ease .9s;
+}
+.loaded .herometa{ opacity:1; }
+.herometa b{ color:var(--paper); font-weight:500; }
+.herometa .pill{ color:var(--living); }
+.cue{
+  position:absolute; left:var(--pad); bottom:30px; display:flex; align-items:center; gap:11px;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--muted);
+  opacity:0; transition:opacity 1s ease 1.2s;
+}
+.loaded .cue{ opacity:.8; }
+.cue .rail{ width:1px; height:34px; background:linear-gradient(var(--brass),transparent); position:relative; overflow:hidden; }
+.cue .rail::after{ content:""; position:absolute; top:-40%; left:0; width:100%; height:40%; background:var(--brass-hi); animation:drop 2.2s ease-in-out infinite; }
+@keyframes drop{ 0%{ transform:translateY(0);} 70%,100%{ transform:translateY(240%);} }
+
+/* ---------- generic section ---------- */
+.section{ padding-block:clamp(80px, 13vh, 170px); position:relative; }
+.sheet{ background:rgba(11,21,18,0.80); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+.tag{
+  font-family:var(--mono); font-size:11.5px; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--brass); display:flex; align-items:center; gap:13px; margin-bottom:40px;
+}
+.tag::before{ content:attr(data-n); color:var(--slate); font-weight:500; }
+.tag::after{ content:""; flex:1; height:1px; background:var(--line); }
+
+/* reveal on scroll */
+.reveal{ opacity:0; transform:translateY(34px); transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+.reveal.in{ opacity:1; transform:none; }
+
+/* ---------- intro statement ---------- */
+.statement{
+  font-family:var(--display); font-weight:500;
+  font-size:clamp(1.5rem, 4.3vw, 3.15rem); line-height:1.14; letter-spacing:-.02em;
+  max-width:22ch;
+}
+.statement .q{ color:var(--muted); }
+.statement .k{ color:var(--brass-hi); }
+.introgrid{ display:grid; grid-template-columns:1fr; gap:54px; }
+.leadcol p{ color:var(--muted); font-size:clamp(1rem,1.5vw,1.12rem); max-width:46ch; margin-top:22px; }
+.leadcol p strong{ color:var(--paper); font-weight:500; }
+
+/* ---------- problems ---------- */
+.problems{ border-top:1px solid var(--line-soft); }
+.prob{
+  display:grid; grid-template-columns:1fr; gap:16px;
+  padding:38px 8px; border-bottom:1px solid var(--line-soft);
+  position:relative; transition:background .4s ease, padding .4s ease;
+}
+.prob::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:linear-gradient(var(--brass),var(--living)); transform:scaleY(0); transform-origin:top;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.prob:hover{ background:linear-gradient(90deg, rgba(200,162,75,0.05), transparent 62%); padding-left:20px; }
+.prob:hover::before{ transform:scaleY(1); }
+.psit{
+  font-family:var(--display); font-weight:600; font-size:clamp(1.35rem,3.3vw,2.3rem);
+  line-height:1.12; letter-spacing:-.02em; color:var(--paper); max-width:22ch;
+  transition:color .3s ease;
+}
+.prob:hover .psit{ color:var(--brass-hi); }
+.psit::before{ content:"\201C"; color:var(--brass); }
+.psit::after{ content:"\201D"; color:var(--brass); }
+.pans{ color:var(--muted); max-width:58ch; font-size:1.02rem; line-height:1.6; }
+.pans b{ color:var(--paper); font-weight:500; }
+
+/* ---------- origin band ---------- */
+.origin .okick{
+  font-family:var(--mono); font-size:11.5px; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--brass); display:flex; align-items:center; gap:13px; margin-bottom:24px;
+}
+.origin .okick::after{ content:""; flex:1; height:1px; background:var(--line); }
+.oline{
+  font-family:var(--display); font-weight:500; font-size:clamp(1.5rem,4vw,3rem);
+  line-height:1.16; letter-spacing:-.02em; max-width:26ch; color:var(--paper);
+}
+.oline em{ font-style:italic; color:var(--brass-hi); }
+
+/* ---------- credentials ---------- */
+.creds{ display:grid; grid-template-columns:1fr; }
+.credrow{
+  display:grid; grid-template-columns:200px 1fr; gap:24px; align-items:start;
+  padding:20px 0; border-top:1px solid var(--line-soft);
+}
+.credrow:last-child{ border-bottom:1px solid var(--line-soft); }
+.credrow .ck{ font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); padding-top:2px; }
+.credrow .cv{ color:var(--paper); font-size:clamp(1rem,1.7vw,1.16rem); font-weight:300; line-height:1.5; }
+.credrow .cv b{ font-weight:500; }
+.credrow .cv .sub{ color:var(--muted); }
+@media (max-width:640px){ .credrow{ grid-template-columns:1fr; gap:5px; } }
+
+/* ---------- capabilities ---------- */
+.caps{ display:grid; grid-template-columns:1fr; }
+.crow{
+  display:grid; grid-template-columns:200px 1fr; gap:24px; align-items:start;
+  padding:22px 0; border-top:1px solid var(--line-soft);
+}
+.crow:last-child{ border-bottom:1px solid var(--line-soft); }
+.ckey{ font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); padding-top:3px; }
+.cval{ color:var(--paper); font-size:clamp(1rem,1.7vw,1.16rem); font-weight:300; line-height:1.5; }
+.cval b{ font-weight:500; }
+
+/* ---------- approach ---------- */
+.principles{ display:grid; grid-template-columns:1fr; gap:2px; }
+.pr{
+  padding:30px 26px; border:1px solid var(--line-soft); border-radius:14px;
+  background:rgba(15,29,25,0.5); transition:border-color .35s ease, transform .35s ease, background .35s ease;
+}
+.pr:hover{ border-color:var(--line); transform:translateY(-4px); background:rgba(15,29,25,0.85); }
+.pr .idx{ font-family:var(--mono); font-size:12px; color:var(--brass); letter-spacing:.1em; }
+.pr h4{ font-family:var(--display); font-weight:600; font-size:1.35rem; letter-spacing:-.01em; margin:16px 0 9px; }
+.pr p{ color:var(--muted); font-size:.96rem; }
+
+/* ---------- ventures ---------- */
+.vent{ display:grid; grid-template-columns:1fr; gap:22px; }
+.vcard{
+  border:1px solid var(--line-soft); border-radius:16px; padding:clamp(26px,4vw,42px);
+  background:rgba(15,29,25,0.55); display:flex; flex-direction:column; gap:14px;
+  transition:border-color .4s ease, background .4s ease;
+}
+.vcard:hover{ border-color:var(--line); background:rgba(15,29,25,0.85); }
+.vcard .vh{ display:flex; align-items:center; gap:14px; }
+.vcard h3{ font-family:var(--display); font-weight:700; font-size:clamp(1.5rem,3vw,2rem); letter-spacing:-.02em; }
+.vcard .role{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--brass); }
+.vcard p{ color:var(--muted); max-width:54ch; }
+
+/* ---------- contact ---------- */
+.contact{ text-align:left; }
+.bighello{
+  font-family:var(--display); font-weight:700;
+  font-size:clamp(2.6rem,10vw,7rem); line-height:.95; letter-spacing:-.03em; margin-bottom:34px;
+}
+.bighello .g{ color:var(--brass); }
+.clinks{ display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; }
+.clink{
+  font-family:var(--mono); font-size:13px; letter-spacing:.02em;
+  border:1px solid var(--line); border-radius:100px; padding:13px 22px;
+  color:var(--paper); display:inline-flex; align-items:center; gap:10px;
+  transition:background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;
+}
+.clink:hover{ background:var(--brass); color:#0B1512; border-color:var(--brass); transform:translateY(-3px); }
+.clink .ar{ transition:transform .3s ease; }
+.clink:hover .ar{ transform:translate(3px,-3px); }
+.ph{ color:var(--brass-hi); border-bottom:1px dashed rgba(228,200,119,.4); }
+.availrow{
+  margin-top:40px; display:flex; align-items:center; gap:12px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.05em; color:var(--muted);
+}
+.availrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--living); box-shadow:0 0 10px var(--living); }
+
+/* ---------- footer ---------- */
+footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:relative; z-index:2; }
+.foot{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:var(--muted); }
+.foot a:hover{ color:var(--brass-hi); }
+.totop{ display:inline-flex; align-items:center; gap:8px; }
+
+/* ---------- responsive ---------- */
+@media (min-width:760px){
+  .introgrid{ grid-template-columns:1.1fr .9fr; align-items:end; }
+  .prob{ grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr); gap:46px; align-items:start; }
+  .principles{ grid-template-columns:repeat(2,1fr); gap:14px; }
+  .vent{ grid-template-columns:repeat(2,1fr); }
+}
+@media (min-width:1080px){
+  .principles{ grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width:860px){
+  .menu a:not(.cta){ display:none; }
+  .menu{ gap:0; }
+  .menu a.cta{ padding:9px 15px; }
+}
+@media (max-width:640px){
+  .witem{ grid-template-columns:36px 1fr; }
+  .wtags{ grid-column:1 / -1; justify-content:flex-start; margin-top:6px; }
+  .crow{ grid-template-columns:1fr; gap:6px; }
+  .herometa{ gap:10px 20px; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  .reveal{ opacity:1 !important; transform:none !important; }
+  .reveal-line > span{ transform:none !important; }
+  .herometa, .cue{ opacity:1 !important; transition:none !important; }
+  .cue .rail::after{ animation:none; }
+  *{ transition-duration:.001ms !important; }
+}
+:focus-visible{ outline:2px solid var(--brass-hi); outline-offset:3px; border-radius:3px; }
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="wrap">
+<header id="site-header">
+  <div class="bar nav">
+    <a href="#top" class="mark" aria-label="Richard van Zyl — home"><span class="dot"></span>RICHARD&nbsp;VAN&nbsp;ZYL</a>
+    <nav class="menu" aria-label="Primary">
+      <a href="#problems">Problems</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#approach">Approach</a>
+      <a href="#ventures">Ventures</a>
+      <a href="#contact" class="cta">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero bar" aria-label="Introduction">
+    <p class="eyebrow">Solutions Architect · Technical Lead</p>
+    <h1>
+      <span class="reveal-line"><span>Richard</span></span>
+      <span class="reveal-line"><span class="sur">van Zyl</span></span>
+    </h1>
+    <p class="thesis reveal-line"><span>I build the systems that move money — where <em>nearly right</em> is just wrong.</span></p>
+    <div class="herometa">
+      <span><b>Based</b> · Pretoria, South Africa</span>
+      <span><b>Domain</b> · High-throughput multi-tenant financial systems</span>
+      <span class="pill">● Open to architecture &amp; technical leadership roles</span>
+    </div>
+    <div class="cue"><span class="rail"></span>Scroll</div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section sheet" id="intro" aria-label="Positioning">
+    <div class="bar">
+      <h2 class="tag" data-n="01">Position</h2>
+      <div class="introgrid">
+        <p class="statement reveal">
+          A ledger doesn't get to be <span class="q">nearly</span> <span class="k">correct</span> <span class="q">— not once, not under load, not at three in the morning.</span>
+        </p>
+        <div class="leadcol reveal">
+          <p>Nine years across <strong>C#/.NET and SQL Server</strong> — roughly five leading teams, three and a half as Solutions Architect. Most recently I owned the architecture of a core financial platform that replaced a legacy banking system, handling deposits and withdrawals across African markets for some of the continent's largest gaming brands.</p>
+          <p>My specialism is the unglamorous half of that sentence: <strong>concurrency, consistency, contention</strong>. Exactly-once withdrawal processing on a live ledger. Multi-tenancy that satisfies SOX-aligned segregation. Partitioning strategies that keep hot tables fast while meeting multi-year regulatory retention.</p>
+          <p>Requirements and solution design run through all of it. I've written business, user, functional and technical specifications since 2017 — pitched to whichever audience had to sign them off — and I work most naturally where a business problem becomes a domain model, an API and a data design.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORIGIN -->
+  <section class="section sheet origin" aria-label="Origin">
+    <div class="bar">
+      <h2 class="okick">Before it was a job</h2>
+      <p class="oline reveal">I was writing code for fun long before anyone paid me for it, and three years of formal study mostly confirmed that the interesting part always started after the lecture ended. Professional since 2017 — the curiosity never really changed shape, it just got handed harder problems.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEMS -->
+  <section class="section sheet problems" id="problems" aria-label="Problems I solve">
+    <div class="bar">
+      <h2 class="tag" data-n="02">Problems I solve</h2>
+      <div class="problist">
+
+        <article class="prob reveal">
+          <p class="psit">Two requests hit the same balance at the same moment, and money goes out twice.</p>
+          <p class="pans">Double-spend is a design problem, not a bug to patch. I build <b>exactly-once, idempotent processing</b>: each request creates an attempt record keyed to a unique identifier, and the ledger deduction is guarded by a <b>rowversion optimistic-concurrency check</b> — so the update only lands if nothing moved underneath it. Nearly right stops being an available outcome.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">The whole business runs on a legacy platform nobody wants to touch.</p>
+          <p class="pans">Rewrites are where companies go to die. I replaced a legacy banking platform with a modern white-label engine <b>while it kept trading</b> — moving the processing flow across piece by piece, never taking the business dark.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">One codebase has to serve multiple legal entities, and the regulator wants them separated.</p>
+          <p class="pans">Multi-tenancy done properly is invisible until it's audited. Configuration-driven, one codebase: <b>a database per legal entity, a schema per brand</b>, resolved per request behind load-balanced instances — purpose-built for <b>SOX-aligned segregation</b> rather than retrofitted to it.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">The ledger has to stay fast, and you have to keep seven years of it.</p>
+          <p class="pans">Those two requirements fight each other. I use <b>tiered partitioning with progressive cold-archiving</b> — detaching yearly partitions onto colder servers — plus in-memory tables and tuned fill factors on the high-contention paths. Regulatory retention met; the hot tables never feel it.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">You need to accept money through 150 different providers, and none of them behave the same.</p>
+          <p class="pans">I work on the layer that makes that plurality somebody else's problem — <b>abstracting 150+ money processors</b> behind one contract, routing online callback and polling flows alongside offline ones like USSD reconciliation, without leaking provider quirks into the domain.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">Nobody can run the system locally, so testing happens against live data.</p>
+          <p class="pans">That isn't inconvenience, it's exposure. On an acquired platform locked to its vendor's cloud, I introduced <b>.NET Aspire and a synthetic data layer</b> — which broke the hosting dependency, made local development possible, and <b>eliminated testing against live production data</b> before the migration onto the company's own tenancy.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">Engineering and the business agree on a plan, then discover they meant different things.</p>
+          <p class="pans">I've written <b>business, user, functional and technical specifications</b> since my first year in the industry — each pitched to the audience that has to sign it off, with the diagrams that make disagreement visible <b>before</b> it becomes rework. Translating between stakeholders and a domain model is the part I'm most often asked back for.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="section sheet" id="capabilities" aria-label="Capabilities">
+    <div class="bar">
+      <h2 class="tag" data-n="03">What I work in</h2>
+      <div class="caps reveal">
+        <div class="crow"><div class="ckey">Languages</div><div class="cval"><b>C# / .NET 8+</b> · <b>T-SQL</b> · TypeScript · JavaScript · PostgreSQL</div></div>
+        <div class="crow"><div class="ckey">Data</div><div class="cval"><b>SQL Server &amp; Azure SQL at scale</b> — execution-plan tuning, indexing, isolation levels and deadlock resolution · table partitioning &amp; archiving · In-Memory OLTP · Entity Framework Core · Redis</div></div>
+        <div class="crow"><div class="ckey">Architecture</div><div class="cval">Domain-Driven Design · CQRS · multi-tenancy &amp; tenant isolation · idempotency / exactly-once processing · event-driven · Clean Architecture</div></div>
+        <div class="crow"><div class="ckey">Web &amp; API</div><div class="cval">ASP.NET Core &amp; Web API · Minimal APIs · gRPC · REST / JSON · MediatR · FluentValidation · Polly</div></div>
+        <div class="crow"><div class="ckey">Platform</div><div class="cval">Azure · Azure DevOps &amp; CI/CD · Docker · AKS · Azure Service Bus / RabbitMQ · feature flags · Application Insights / Serilog</div></div>
+        <div class="crow"><div class="ckey">Analysis</div><div class="cval">Requirements specification (BRS / URS / FRS / TRS) · solution design &amp; architecture · UML modelling · stakeholder translation</div></div>
+        <div class="crow"><div class="ckey">AI</div><div class="cval">Agent orchestration with budget governance · multi-model routing · MCP integration · analyzer-enforced quality gates</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS -->
+  <section class="section sheet" id="credentials" aria-label="Credentials">
+    <div class="bar">
+      <h2 class="tag" data-n="04">Credentials</h2>
+      <div class="creds reveal">
+        <div class="credrow"><div class="ck">Education</div><div class="cv"><b>National Diploma — Information Technology: Software Development</b> <span class="sub">— Varsity College, 2014–2016</span></div></div>
+        <div class="credrow"><div class="ck">Assessment</div><div class="cv">IKM C# Assessment — <b>73rd percentile</b> of all test takers <span class="sub">— assessed twice, six months apart</span></div></div>
+        <div class="credrow"><div class="ck">Foundation</div><div class="cv">Nine years professional <b>C#/.NET and SQL Server</b> <span class="sub">— fintech, gaming, banking, supply chain and utilities</span></div></div>
+        <div class="credrow"><div class="ck">Open source</div><div class="cv"><a href="https://github.com/RichardvZyl/CombinatorialOptimiser">CombinatorialOptimiser</a> — a dependency-free .NET optimisation library, 20+ solvers · <a href="https://github.com/RichardvZyl/engineering-standards">engineering-standards</a> — conventions a repository can consume</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="section sheet" id="approach" aria-label="Approach">
+    <div class="bar">
+      <h2 class="tag" data-n="05">How I build</h2>
+      <div class="principles">
+        <div class="pr reveal"><div class="idx">P·01</div><h4>Correctness before cleverness</h4><p>Under concurrency, the clever version is usually the one that loses money. Money is <code>decimal</code>, always.</p></div>
+        <div class="pr reveal"><div class="idx">P·02</div><h4>The schema is the design</h4><p>The query plan is the proof. Most performance problems are already visible if someone reads them.</p></div>
+        <div class="pr reveal"><div class="idx">P·03</div><h4>Decisions get written down</h4><p>Anything hard to reverse becomes an ADR — the context, the options including doing nothing, and what it now costs us.</p></div>
+        <div class="pr reveal"><div class="idx">P·04</div><h4>Ship through the change</h4><p>Trunk-based with feature flags, released daily behind canaries. Migrations that never take the business offline.</p></div>
+        <div class="pr reveal"><div class="idx">P·05</div><h4>Specify for the reader</h4><p>The same decision written three ways for three audiences. Ambiguity found in a document is far cheaper than ambiguity found in production.</p></div>
+        <div class="pr reveal"><div class="idx">P·06</div><h4>Argue, then commit</h4><p>I work best with decision ownership and a short path from problem to production. I'll push back on process that doesn't move the outcome — and commit fully once it's settled.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENTURES -->
+  <section class="section sheet" id="ventures" aria-label="Ventures">
+    <div class="bar">
+      <h2 class="tag" data-n="06">Beyond the day role</h2>
+      <div class="vent">
+        <div class="vcard reveal">
+          <div class="vh"><h3>Orchestration Platform</h3></div>
+          <span class="role">Co-founder</span>
+          <p>A deterministic business-orchestration platform built on gRPC and standalone module assemblies, with deterministic replay as the differentiator. I own the core engine, runtime, module execution, configuration and flow state, traces and audit logs.</p>
+        </div>
+        <div class="vcard reveal">
+          <div class="vh"><h3>Technical Recruitment</h3></div>
+          <span class="role">Co-owner</span>
+          <p>An IT recruitment agency where my role is senior technical screening — assessing engineers against the standard I'd want on my own team, rather than against a keyword list.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section sheet contact" id="contact" aria-label="Contact">
+    <div class="bar">
+      <h2 class="tag" data-n="07">Contact</h2>
+      <p class="bighello reveal">Let's talk about<br>the <span class="g">hard part</span>.</p>
+      <div class="clinks reveal">
+        <a class="clink" href="mailto:richardvzyl@gmail.com"><span class="ph">richardvzyl@gmail.com</span><span class="ar">↗</span></a>
+        <a class="clink" href="https://www.linkedin.com/in/richardvzyl/">LinkedIn<span class="ar">↗</span></a>
+        <a class="clink" href="https://github.com/RichardvZyl">GitHub<span class="ar">↗</span></a>
+      </div>
+      <div class="availrow"><span class="dot"></span>Pretoria, South Africa · open to Solutions Architect, Technical Lead and backend architecture roles</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="bar foot">
+    <span>© 2026 Richard van Zyl · Pretoria, South Africa</span>
+    <a href="#top" class="totop">Back to top ↑</a>
+  </div>
+</footer>
+</div>
+
+<!-- ============================ WebGL ============================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- nav: stuck state + scroll-spy + reveals ---- */
+  var header = document.getElementById("site-header");
+  function onScrollUI(){ if(header) header.classList.toggle("stuck", window.scrollY > 40); }
+  window.addEventListener("scroll", onScrollUI, {passive:true}); onScrollUI();
+
+  var revEls = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window && !reduce){
+    var ro = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); ro.unobserve(e.target); } });
+    }, {threshold:0.14, rootMargin:"0px 0px -8% 0px"});
+    revEls.forEach(function(el){ ro.observe(el); });
+  } else {
+    revEls.forEach(function(el){ el.classList.add("in"); });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll(".menu a[href^='#']"));
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+  if("IntersectionObserver" in window){
+    var so = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          var i = secs.indexOf(e.target);
+          links.forEach(function(l){ l.classList.remove("on"); });
+          if(i>=0 && !links[i].classList.contains("cta")) links[i].classList.add("on");
+        }
+      });
+    }, {threshold:0.5});
+    secs.forEach(function(s){ if(s) so.observe(s); });
+  }
+
+  /* fire hero load animation */
+  window.addEventListener("load", function(){
+    requestAnimationFrame(function(){ document.body.classList.add("loaded"); });
+  });
+  // safety: ensure it triggers even if load already fired
+  setTimeout(function(){ document.body.classList.add("loaded"); }, 400);
+
+  /* ---- WebGL fabric ---- */
+  var canvas = document.getElementById("bg");
+  var THREEok = (typeof THREE !== "undefined");
+  var gl = null;
+  try { gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl"); } catch(e){}
+  if(!THREEok || !gl){ return; } // CSS gradient fallback stays
+
+  var renderer, scene, camera, points, uniforms, raf = 0, running = true;
+  var mouse = {x:0,y:0}, tgt = {x:0,y:0};
+  var reweave = 0, reweaveTarget = 0;
+  var assemble = 0;
+  var start = performance.now();
+
+  var mobile = Math.min(window.innerWidth, window.innerHeight) < 720;
+
+  var vert = [
+    "attribute float aRnd;",
+    "attribute float aThresh;",
+    "uniform float uTime, uReweave, uAssemble, uSize, uDpr;",
+    "varying float vConv; varying float vGlow;",
+    "vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}",
+    "vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}",
+    "vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}",
+    "vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}",
+    "float snoise(vec3 v){",
+    "  const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);",
+    "  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);",
+    "  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);",
+    "  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;",
+    "  i=mod289(i);",
+    "  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));",
+    "  float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;",
+    "  vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);",
+    "  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);",
+    "  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);",
+    "  vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));",
+    "  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;",
+    "  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);",
+    "  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));",
+    "  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;",
+    "  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;",
+    "  return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));",
+    "}",
+    "vec3 snoiseVec3(vec3 x){ float s=snoise(x); float s1=snoise(vec3(x.y-19.1,x.z+33.4,x.x+47.2)); float s2=snoise(vec3(x.z+74.2,x.x-124.5,x.y+99.4)); return vec3(s,s1,s2); }",
+    "vec3 curl(vec3 p){ const float e=0.12; vec3 dx=vec3(e,0.,0.),dy=vec3(0.,e,0.),dz=vec3(0.,0.,e);",
+    "  vec3 px0=snoiseVec3(p-dx),px1=snoiseVec3(p+dx); vec3 py0=snoiseVec3(p-dy),py1=snoiseVec3(p+dy); vec3 pz0=snoiseVec3(p-dz),pz1=snoiseVec3(p+dz);",
+    "  float x=py1.z-py0.z-pz1.y+pz0.y; float y=pz1.x-pz0.x-px1.z+px0.z; float z=px1.y-px0.y-py1.x+py0.x;",
+    "  return normalize(vec3(x,y,z)/(2.0*e)); }",
+    "void main(){",
+    "  vec3 grid=position;",
+    "  vec3 dir=normalize(vec3(sin(aRnd*123.0),cos(aRnd*77.0),sin(aRnd*45.0))+0.001);",
+    "  vec3 base=mix(dir*70.0, grid, uAssemble);",
+    "  base+=curl(base*0.02+vec3(0.0,uTime*0.05,0.0))*0.9*uAssemble;",
+    "  float breathe=sin(uTime*0.5+aRnd*6.28)*0.14;",
+    "  base+=normalize(grid+0.001)*breathe*uAssemble;",
+    "  float t=smoothstep(aThresh, aThresh+0.34, uReweave);",
+    "  vec3 flow=base;",
+    "  flow+=curl(base*0.03+vec3(0.0,uTime*0.04,0.0))*(6.5+aRnd*6.0);",
+    "  flow+=curl(flow*0.05+10.0)*2.4*t;",
+    "  vec3 pos=mix(base, flow, t);",
+    "  vConv=t; vGlow=length(pos-base)*0.045;",
+    "  vec4 mv=modelViewMatrix*vec4(pos,1.0);",
+    "  gl_Position=projectionMatrix*mv;",
+    "  float sz=uSize*(0.55+aRnd*0.85)*(1.0+t*0.7);",
+    "  gl_PointSize=min(sz*uDpr*(300.0/max(-mv.z,1.0)), 22.0);",
+    "}"
+  ].join("\n");
+
+  var frag = [
+    "precision highp float;",
+    "uniform vec3 uSlate,uBrass,uLiving,uPaper;",
+    "varying float vConv; varying float vGlow;",
+    "void main(){",
+    "  vec2 uv=gl_PointCoord-0.5; float d=length(uv);",
+    "  float a=smoothstep(0.5,0.04,d); if(a<=0.001) discard;",
+    "  vec3 nc=mix(uBrass,uLiving,clamp(vGlow*3.6,0.0,1.0));",
+    "  vec3 col=mix(uSlate,nc,vConv);",
+    "  col+=vGlow*uPaper*0.55;",
+    "  col*=0.82+(1.0-d)*0.55;",
+    "  gl_FragColor=vec4(col, a*(0.17+vConv*0.46));",
+    "}"
+  ].join("\n");
+
+  function C(hex){ var c=new THREE.Color(hex); return new THREE.Vector3(c.r,c.g,c.b); }
+
+  function build(){
+    renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:false, alpha:true, powerPreference:"high-performance"});
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(56, window.innerWidth/window.innerHeight, 1, 600);
+    camera.position.set(0, 0, 96);
+
+    var nx = mobile?34:54, ny = mobile?22:34, nz = mobile?5:6;
+    var count = nx*ny*nz;
+    var pos = new Float32Array(count*3);
+    var rnd = new Float32Array(count);
+    var thr = new Float32Array(count);
+    var W=158, H=98, Dp=10, k=0;
+    for(var i=0;i<nx;i++){
+      for(var j=0;j<ny;j++){
+        for(var m=0;m<nz;m++){
+          var x=(i/(nx-1)-0.5)*W;
+          var y=(j/(ny-1)-0.5)*H;
+          var z=(m/(nz-1)-0.5)*Dp;
+          z -= (x*x + y*y)*0.0005;               // gentle dish toward camera
+          pos[k*3]=x; pos[k*3+1]=y; pos[k*3+2]=z;
+          rnd[k]=Math.random();
+          thr[k]=(0.5*((x/W)+0.5) + 0.5*Math.random())*0.82; // wave + noise sweep
+          k++;
+        }
+      }
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos,3));
+    geo.setAttribute("aRnd", new THREE.BufferAttribute(rnd,1));
+    geo.setAttribute("aThresh", new THREE.BufferAttribute(thr,1));
+
+    uniforms = {
+      uTime:{value:0}, uReweave:{value:0}, uAssemble:{value:0},
+      uSize:{value:mobile?11:13}, uDpr:{value:renderer.getPixelRatio()},
+      uSlate:{value:C("#4B5A5A")}, uBrass:{value:C("#C8A24B")},
+      uLiving:{value:C("#42D6B4")}, uPaper:{value:C("#EDE9DF")}
+    };
+    var mat = new THREE.ShaderMaterial({
+      uniforms:uniforms, vertexShader:vert, fragmentShader:frag,
+      transparent:true, depthWrite:false, depthTest:false,
+      blending:THREE.AdditiveBlending
+    });
+    points = new THREE.Points(geo, mat);
+    scene.add(points);
+  }
+
+  function resize(){
+    if(!renderer) return;
+    mobile = Math.min(window.innerWidth, window.innerHeight) < 720;
+    camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    uniforms.uDpr.value = renderer.getPixelRatio();
+  }
+
+  function scrollProgress(){
+    var h = document.documentElement;
+    var max = (h.scrollHeight - h.clientHeight) || 1;
+    return Math.min(Math.max(window.scrollY/max, 0), 1);
+  }
+
+  function loop(now){
+    if(!running){ return; }
+    raf = requestAnimationFrame(loop);
+    var t = (now - start)/1000;
+
+    // ease assemble in
+    if(assemble < 1) assemble += (1-assemble)*0.02 + 0.002;
+    // ease reweave toward scroll
+    reweaveTarget = scrollProgress();
+    reweave += (reweaveTarget - reweave)*0.06;
+
+    uniforms.uTime.value = t;
+    uniforms.uAssemble.value = reduce?1:Math.min(assemble,1);
+    uniforms.uReweave.value = reduce?0.45:Math.max(reweave,0.05);
+
+    // camera drift + mouse parallax
+    tgt.x += (mouse.x - tgt.x)*0.04; tgt.y += (mouse.y - tgt.y)*0.04;
+    camera.position.x = tgt.x*10 + Math.sin(t*0.12)*4;
+    camera.position.y = -tgt.y*8 + Math.cos(t*0.10)*3;
+    camera.lookAt(0,0,0);
+    points.rotation.y = Math.sin(t*0.05)*0.14 + tgt.x*0.10;
+    points.rotation.x = Math.cos(t*0.04)*0.05 - tgt.y*0.06;
+
+    renderer.render(scene, camera);
+    if(reduce){ running=false; } // one calm settle for reduced motion
+  }
+
+  try{
+    build();
+    window.addEventListener("resize", resize, {passive:true});
+    if(!('ontouchstart' in window)){
+      window.addEventListener("mousemove", function(e){
+        mouse.x = (e.clientX/window.innerWidth - 0.5);
+        mouse.y = (e.clientY/window.innerHeight - 0.5);
+      }, {passive:true});
+    }
+    document.addEventListener("visibilitychange", function(){
+      if(document.hidden){ running=false; cancelAnimationFrame(raf); }
+      else if(!reduce){ running=true; start=performance.now()-1000; raf=requestAnimationFrame(loop); }
+    });
+    if(reduce){ assemble=1; }
+    raf = requestAnimationFrame(loop);
+  }catch(err){
+    // hard fallback: drop canvas, keep CSS gradient
+    if(canvas && canvas.parentNode){ canvas.style.display="none"; }
+  }
+})();
+</script>
+</body>
+</html>

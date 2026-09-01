@@ -416,7 +416,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         </p>
         <div class="leadcol reveal">
           <p>Nine years across <strong>C#/.NET and SQL Server</strong> — roughly five leading teams, three and a half as Solutions Architect. Most recently I owned the architecture of a core financial platform that replaced a legacy banking system, handling deposits and withdrawals across African markets for some of the continent's largest gaming brands.</p>
-          <p>My specialism is the unglamorous half of that sentence: <strong>concurrency, consistency, contention</strong>. Exactly-once withdrawal processing on a live ledger. Multi-tenancy that satisfies SOX-aligned segregation. Partitioning strategies that keep hot tables fast while meeting multi-year regulatory retention.</p>
+          <p>My specialism is the part that has to be right: <strong>concurrency, consistency, contention</strong>. Exactly-once withdrawal processing on a live ledger. Multi-tenancy that satisfies SOX-aligned segregation. Partitioning strategies that keep hot tables fast while meeting multi-year regulatory retention.</p>
           <p>Requirements and solution design run through all of it. I've written business, user, functional and technical specifications since 2017 — pitched to whichever audience had to sign them off — and I work most naturally where a business problem becomes a domain model, an API and a data design.</p>
         </div>
       </div>
@@ -515,7 +515,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         <div class="pr reveal"><div class="idx">P·03</div><h4>Decisions get written down</h4><p>Anything hard to reverse becomes an ADR — the context, the options including doing nothing, and what it now costs us.</p></div>
         <div class="pr reveal"><div class="idx">P·04</div><h4>Ship through the change</h4><p>Trunk-based with feature flags, released daily behind canaries. Migrations that never take the business offline.</p></div>
         <div class="pr reveal"><div class="idx">P·05</div><h4>Specify for the reader</h4><p>The same decision written three ways for three audiences. Ambiguity found in a document is far cheaper than ambiguity found in production.</p></div>
-        <div class="pr reveal"><div class="idx">P·06</div><h4>Argue, then commit</h4><p>I work best with decision ownership and a short path from problem to production. I'll push back on process that doesn't move the outcome — and commit fully once it's settled.</p></div>
+        <div class="pr reveal"><div class="idx">P·06</div><h4>Debate, then commit</h4><p>I work best with decision ownership and a short path from problem to production. I'll push back on process that doesn't move the outcome — and commit fully once it's settled.</p></div>
       </div>
     </div>
   </section>
@@ -534,7 +534,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
           <div class="vh"><h3>Yuno Technologies</h3></div>
           <span class="role">Co-owner &middot; 50%</span>
           <p>A South African digital consultancy. I hold half the business and lead its technical delivery — architecture, backend engineering and security design across client platforms.</p>
-          <p>Recent work includes a <b>four-plane deployment topology</b> with one-way initiation between planes: a public edge behind CDN and WAF, an SPA plane running a backend-for-frontend that holds the session rather than the tokens, an application plane owning the signing key, and a <b>response-only identity plane</b> on Keycloak issuing OIDC/JWT. Each plane deploys independently with its own secrets, identity and network boundary. Separately, a containerised Django and PostgreSQL platform across four environments — nginx edge, Redis, Azure Functions and Blob Storage, with Prometheus, Grafana and ELK for observability.</p>
+          <p>Recent work includes a <b>four-plane deployment topology</b> with one-way initiation between planes: a public edge behind CDN and WAF, an SPA plane running a backend-for-frontend that holds the session rather than the tokens, an application plane owning the signing key, and a <b>response-only identity plane</b> on Keycloak issuing OIDC/JWT. Each plane deploys independently with its own secrets, identity and network boundary, with <b>mutual TLS and SPIFFE/SPIRE workload identities</b> specified at the service-mesh boundary — sequenced as a phase-two deliverable behind a documented interim rather than forcing a Kubernetes-shaped stack onto the first release. The plane carrying the banking core is moving off shared-kernel containers onto <b>KVM-backed microVM isolation</b> — hardware-level separation, so a container escape in an adjacent workload cannot reach the ledger. Separately, a containerised Django and PostgreSQL platform across four environments — nginx edge, Redis, Azure Functions and Blob Storage, with Prometheus, Grafana and ELK for observability.</p>
         </div>
       </div>
     </div>

@@ -53,6 +53,7 @@
     "Multi-tenant Architecture", "Concurrency Control", "Idempotency",
     "Financial Systems", "Payment Integration", "Database Partitioning",
     "Domain-Driven Design", "CQRS", "Requirements Analysis", "Business Analysis",
+    "Node.js", "Microsoft Azure",
     "Agentic AI", "Model Context Protocol"
   ],
   "sameAs": [
@@ -415,7 +416,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
           A ledger doesn't get to be <span class="q">nearly</span> <span class="k">correct</span> <span class="q">— not once, not under load, not at three in the morning.</span>
         </p>
         <div class="leadcol reveal">
-          <p>Nine years across <strong>C#/.NET and SQL Server</strong> — roughly five leading teams, three and a half as Solutions Architect. Most recently I owned the architecture of a core financial platform that replaced a legacy banking system, handling deposits and withdrawals across African markets for some of the continent's largest gaming brands.</p>
+          <p>Nine years across <strong>C#/.NET and SQL Server</strong> — roughly five leading teams, three and a half as Solutions Architect. From December 2022 to March 2026 I owned the architecture of a core financial platform at <strong>Raging River</strong> that replaced a legacy banking system, handling deposits and withdrawals across African markets for some of the continent's largest gaming brands. That role ended in March 2026 via voluntary severance during a post-acquisition restructure. Since April 2026 I have been <strong>co-owner and solutions architect at Yuno Technologies</strong>, leading technical delivery across client platforms.</p>
           <p>My specialism is the part that has to be right: <strong>concurrency, consistency, contention</strong>. Exactly-once withdrawal processing on a live ledger. Multi-tenancy that satisfies SOX-aligned segregation. Partitioning strategies that keep hot tables fast while meeting multi-year regulatory retention.</p>
           <p>Requirements and solution design run through all of it. I've written business, user, functional and technical specifications since 2017 — pitched to whichever audience had to sign them off — and I work most naturally where a business problem becomes a domain model, an API and a data design.</p>
         </div>
@@ -449,7 +450,12 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
 
         <article class="prob reveal">
           <p class="psit">One codebase has to serve multiple legal entities, and the regulator wants them separated.</p>
-          <p class="pans">Multi-tenancy done properly is invisible until it's audited. Configuration-driven, one codebase: <b>a database per legal entity, a schema per brand</b>, resolved per request behind load-balanced instances — purpose-built for <b>SOX-aligned segregation</b> rather than retrofitted to it.</p>
+          <p class="pans">Target isolation was a database per brand. Production was <b>one SQL Server, schema-per-brand</b>, because separate databases were priced out — one configuration-driven codebase, request-scoped contexts, <b>2 tenants, 25 brands, 150+ payment methods</b>.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">Match day arrives, and the hot path still has to take money.</p>
+          <p class="pans">Four <b>health-checked Docker instances behind a load balancer</b>, one SQL Server as the write source of truth, replicas for reporting only. Instances <b>warmed ahead of known spikes</b>; on contention a threshold <b>sheds the hot payment method</b> onto a separate consumer so the synchronous path stays up.</p>
         </article>
 
         <article class="prob reveal">
@@ -472,6 +478,36 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
           <p class="pans">I've written <b>business, user, functional and technical specifications</b> since my first year in the industry — each pitched to the audience that has to sign it off, with the diagrams that make disagreement visible <b>before</b> it becomes rework. Translating between stakeholders and a domain model is the part I'm most often asked back for.</p>
         </article>
 
+        <article class="prob reveal">
+          <p class="psit">A withdrawal has to be the same attempt if it is retried, and a different one if it isn't.</p>
+          <p class="pans">The production <b>request path</b> is REST initiation, validation, brand-and-method strategy rules, an attempt keyed by a unique trace id, then confirmation driving the ledger debit under rowversion — state change and outbox message committed together. A retry of the same trace id is the same attempt.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">Polling the ledger for work is how you miss a row, or contend for one.</p>
+          <p class="pans"><b>Event-driven work:</b> I replaced chronological state-polling with a transactional outbox committed inside the same save as the state change, so nothing scans business tables to find work. The announcement and the mutation land together; consumers drain from there.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">A message that poisons a consumer cannot stall every other brand.</p>
+          <p class="pans"><b>Reliable delivery:</b> outbox drain goes to per-brand queues with dead-lettering, so segregation holds to the messaging layer and no brand backlog stalls another. Poison goes to a DLQ; retries are keyed, not hoped for.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">The money isn't settled until the processor and the ledger agree.</p>
+          <p class="pans"><b>Settlement</b> is confirmation driving the ledger debit — online callback and polling flows alongside offline ones like USSD reconciliation — so the processor agreement, not hope, is what lands on the books.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">Field meters have to report usage, and the count has to be the count.</p>
+          <p class="pans">At MeterMo I worked the metering estate for <b>electricity, water and gas</b> — device telemetry and usage integrity: readings that must arrive, persist, and not be double-counted. Two APIs, two cross-platform field apps, two websites; capture and reporting from field devices.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">The optimiser should pick a solver the instance can actually finish.</p>
+          <p class="pans">I published <b>CombinatorialOptimiser</b> — a dependency-free .NET library with 20+ exact, construction, improvement and metaheuristic solvers, and a registry that selects by instance size so algorithm choice is an explicit complexity decision, not a default.</p>
+        </article>
+
       </div>
     </div>
   </section>
@@ -481,11 +517,11 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
     <div class="bar">
       <h2 class="tag" data-n="03">What I work in</h2>
       <div class="caps reveal">
-        <div class="crow"><div class="ckey">Languages</div><div class="cval"><b>C# / .NET 8+</b> · <b>T-SQL</b> · TypeScript · JavaScript · PostgreSQL</div></div>
+        <div class="crow"><div class="ckey">Languages</div><div class="cval"><b>C# / .NET 8+</b> · <b>T-SQL</b> · TypeScript · JavaScript · <b>Node.js</b> (SSR where that was the production problem) · PostgreSQL</div></div>
         <div class="crow"><div class="ckey">Data</div><div class="cval"><b>SQL Server &amp; Azure SQL at scale</b> — execution-plan tuning, indexing, isolation levels and deadlock resolution · table partitioning &amp; archiving · In-Memory OLTP · Entity Framework Core · Redis</div></div>
         <div class="crow"><div class="ckey">Architecture</div><div class="cval">Domain-Driven Design · CQRS · multi-tenancy &amp; tenant isolation · idempotency / exactly-once processing · event-driven · Clean Architecture</div></div>
         <div class="crow"><div class="ckey">Web &amp; API</div><div class="cval">ASP.NET Core &amp; Web API · Minimal APIs · gRPC · REST / JSON · MediatR · FluentValidation · Polly</div></div>
-        <div class="crow"><div class="ckey">Platform</div><div class="cval">Azure · Azure DevOps &amp; CI/CD · Docker · AKS · Azure Service Bus / RabbitMQ · feature flags · Application Insights / Serilog</div></div>
+        <div class="crow"><div class="ckey">Platform</div><div class="cval"><b>Azure in production</b> — the request path, event-driven work, reliable delivery, settlement · Azure DevOps &amp; CI/CD · Docker · AKS · Azure Service Bus / RabbitMQ · feature flags · Application Insights / Serilog</div></div>
         <div class="crow"><div class="ckey">Analysis</div><div class="cval">Requirements specification (BRS / URS / FRS / TRS) · solution design &amp; architecture · UML modelling · stakeholder translation</div></div>
         <div class="crow"><div class="ckey">AI</div><div class="cval">Agent orchestration with budget governance · multi-model routing · MCP integration · analyzer-enforced quality gates</div></div>
       </div>
@@ -523,18 +559,18 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
   <!-- VENTURES -->
   <section class="section sheet" id="ventures" aria-label="Ventures">
     <div class="bar">
-      <h2 class="tag" data-n="06">Beyond the day role</h2>
+      <h2 class="tag" data-n="06">Now</h2>
       <div class="vent">
+        <div class="vcard reveal">
+          <div class="vh"><h3>Yuno Technologies</h3></div>
+          <span class="role">Co-owner / Solutions Architect &middot; Apr 2026 – present &middot; 50%</span>
+          <p>A South African digital consultancy. I hold half the business and lead its technical delivery — architecture, backend engineering and security design across client platforms.</p>
+          <p>Recent work includes a <b>four-plane deployment topology</b> with one-way initiation between planes: a public edge behind CDN and WAF, an SPA plane running a backend-for-frontend that holds the session rather than the tokens, an application plane owning the signing key, and a <b>response-only identity plane</b> on Keycloak issuing OIDC/JWT. Each plane deploys independently with its own secrets, identity and network boundary, with <b>mutual TLS and SPIFFE/SPIRE workload identities</b> specified at the service-mesh boundary — sequenced as a phase-two deliverable behind a documented interim rather than forcing a Kubernetes-shaped stack onto the first release. The plane carrying the banking core is moving off shared-kernel containers onto <b>KVM-backed microVM isolation</b> — hardware-level separation, so a container escape in an adjacent workload cannot reach the ledger; currently under evaluation rather than in production. Separately, a containerised Django and PostgreSQL platform across four environments — nginx edge, Redis, Azure Functions and Blob Storage, with Prometheus, Grafana and ELK for observability.</p>
+        </div>
         <div class="vcard reveal">
           <div class="vh"><h3>Orchestration Platform</h3></div>
           <span class="role">Co-founder</span>
           <p>A deterministic business-orchestration platform built on gRPC and standalone module assemblies, with deterministic replay as the differentiator. I own the core engine, runtime, module execution, configuration and flow state, traces and audit logs.</p>
-        </div>
-        <div class="vcard reveal">
-          <div class="vh"><h3>Yuno Technologies</h3></div>
-          <span class="role">Co-owner &middot; 50%</span>
-          <p>A South African digital consultancy. I hold half the business and lead its technical delivery — architecture, backend engineering and security design across client platforms.</p>
-          <p>Recent work includes a <b>four-plane deployment topology</b> with one-way initiation between planes: a public edge behind CDN and WAF, an SPA plane running a backend-for-frontend that holds the session rather than the tokens, an application plane owning the signing key, and a <b>response-only identity plane</b> on Keycloak issuing OIDC/JWT. Each plane deploys independently with its own secrets, identity and network boundary, with <b>mutual TLS and SPIFFE/SPIRE workload identities</b> specified at the service-mesh boundary — sequenced as a phase-two deliverable behind a documented interim rather than forcing a Kubernetes-shaped stack onto the first release. The plane carrying the banking core is moving off shared-kernel containers onto <b>KVM-backed microVM isolation</b> — hardware-level separation, so a container escape in an adjacent workload cannot reach the ledger. Separately, a containerised Django and PostgreSQL platform across four environments — nginx edge, Redis, Azure Functions and Blob Storage, with Prometheus, Grafana and ELK for observability.</p>
         </div>
       </div>
     </div>

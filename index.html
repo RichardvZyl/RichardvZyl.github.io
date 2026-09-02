@@ -338,7 +338,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
 
 /* ---------- responsive ---------- */
 @media (min-width:760px){
-  .introgrid{ grid-template-columns:1.1fr .9fr; align-items:end; }
+  .introgrid{ grid-template-columns:1.1fr .9fr; align-items:start; }
   .prob{ grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr); gap:46px; align-items:start; }
   .principles{ grid-template-columns:repeat(2,1fr); gap:14px; }
   .vent{ grid-template-columns:repeat(2,1fr); }
@@ -454,11 +454,6 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         </article>
 
         <article class="prob reveal">
-          <p class="psit">Match day arrives, and the hot path still has to take money.</p>
-          <p class="pans">Four <b>health-checked Docker instances behind a load balancer</b>, one SQL Server as the write source of truth, replicas for reporting only. Instances <b>warmed ahead of known spikes</b>; on contention a threshold <b>sheds the hot payment method</b> onto a separate consumer so the synchronous path stays up.</p>
-        </article>
-
-        <article class="prob reveal">
           <p class="psit">The ledger has to stay fast, and you have to keep seven years of it.</p>
           <p class="pans">Those two requirements fight each other. I use <b>tiered partitioning with progressive cold-archiving</b> — detaching yearly partitions onto colder servers — plus in-memory tables and tuned fill factors on the high-contention paths. Regulatory retention met; the hot tables never feel it.</p>
         </article>
@@ -480,22 +475,12 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
 
         <article class="prob reveal">
           <p class="psit">A withdrawal has to be the same attempt if it is retried, and a different one if it isn't.</p>
-          <p class="pans">The production <b>request path</b> is REST initiation, validation, brand-and-method strategy rules, an attempt keyed by a unique trace id, then confirmation driving the ledger debit under rowversion — state change and outbox message committed together. A retry of the same trace id is the same attempt.</p>
+          <p class="pans">The production <b>request path</b> is REST initiation, validation, brand-and-method strategy rules, an attempt keyed by a unique trace id, then confirmation driving the ledger debit under rowversion — state change and outbox message committed together. A retry of the same trace id is the same attempt. <b>Settlement</b> is that confirmation — online callback and polling flows alongside offline ones like USSD reconciliation — so processor agreement, not hope, is what lands on the books.</p>
         </article>
 
         <article class="prob reveal">
           <p class="psit">Polling the ledger for work is how you miss a row, or contend for one.</p>
-          <p class="pans"><b>Event-driven work:</b> I replaced chronological state-polling with a transactional outbox committed inside the same save as the state change, so nothing scans business tables to find work. The announcement and the mutation land together; consumers drain from there.</p>
-        </article>
-
-        <article class="prob reveal">
-          <p class="psit">A message that poisons a consumer cannot stall every other brand.</p>
-          <p class="pans"><b>Reliable delivery:</b> outbox drain goes to per-brand queues with dead-lettering, so segregation holds to the messaging layer and no brand backlog stalls another. Poison goes to a DLQ; retries are keyed, not hoped for.</p>
-        </article>
-
-        <article class="prob reveal">
-          <p class="psit">The money isn't settled until the processor and the ledger agree.</p>
-          <p class="pans"><b>Settlement</b> is confirmation driving the ledger debit — online callback and polling flows alongside offline ones like USSD reconciliation — so the processor agreement, not hope, is what lands on the books.</p>
+          <p class="pans"><b>Event-driven work:</b> I replaced chronological state-polling with a transactional outbox committed inside the same save as the state change, so nothing scans business tables to find work. The announcement and the mutation land together; consumers drain from there. <b>Reliable delivery:</b> the drain goes to per-brand queues with dead-lettering, so segregation holds to the messaging layer and no brand backlog stalls another. Poison goes to a DLQ; retries are keyed, not hoped for.</p>
         </article>
 
         <article class="prob reveal">

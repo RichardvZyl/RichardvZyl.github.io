@@ -383,7 +383,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
       <a href="#capabilities">Capabilities</a>
       <a href="#credentials">Credentials</a>
       <a href="#approach">Approach</a>
-      <a href="#ventures">Ventures</a>
+      <a href="#ventures">Now</a>
       <a href="#contact" class="cta">Get in touch</a>
     </nav>
   </div>
@@ -449,13 +449,13 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         </article>
 
         <article class="prob reveal">
-          <p class="psit">One codebase has to serve multiple legal entities, and the regulator wants them separated.</p>
+          <p class="psit">One codebase has to serve two operators and twenty-five brands, and the regulator still wants them separated.</p>
           <p class="pans">Target isolation was a database per brand. Production was <b>one SQL Server, schema-per-brand</b>, because separate databases were priced out — one configuration-driven codebase, request-scoped contexts, <b>2 tenants, 25 brands, 150+ payment methods</b>.</p>
         </article>
 
         <article class="prob reveal">
           <p class="psit">Match day arrives, and the hot path still has to take money.</p>
-          <p class="pans">Four <b>health-checked Docker instances behind a load balancer</b>, one SQL Server as the write source of truth, replicas for reporting only. Instances <b>warmed ahead of known spikes</b>; on contention a threshold <b>sheds the hot payment method</b> onto a separate consumer so the synchronous path stays up.</p>
+          <p class="pans">Four <b>health-checked Docker instances behind a round-robin load balancer</b>, one SQL Server as the write source of truth, replicas for reporting only. Instances <b>warmed ahead of known spikes</b>; on contention a threshold <b>sheds the hot payment method</b> onto a separate consumer so the synchronous path stays up.</p>
         </article>
 
         <article class="prob reveal">

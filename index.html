@@ -460,7 +460,12 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
 
         <article class="prob reveal">
           <p class="psit">You need to accept money through 150 different providers, and none of them behave the same.</p>
-          <p class="pans">I work on the layer that makes that plurality somebody else's problem — <b>abstracting 150+ money processors</b> behind one contract, routing online callback and polling flows alongside offline ones like USSD reconciliation, without leaking provider quirks into the domain.</p>
+          <p class="pans">I worked on the <b>integration platform</b> itself — where integrations are managed, routed and reconciled — and built integrations on it. Provider payloads are reshaped to the core contract by <b>per-provider Python marshalling</b>, so a provider's quirks never reach the domain. I also <b>rewrote the engine that moves each integration into its own instance</b>, so one slow or chatty provider could no longer exhaust a shared thread pool or run the host out of sockets.</p>
+        </article>
+
+        <article class="prob reveal">
+          <p class="psit">Move 150 million rows on the busiest day of the week, and let nobody notice.</p>
+          <p class="pans">Roughly <b>150 million records</b> migrated across a high-throughput Saturday — peak trading, not a quiet maintenance window — with <b>no drop in Apdex</b>. Copying the rows was never the hard part; doing it while the live path stayed indistinguishable was.</p>
         </article>
 
         <article class="prob reveal">
@@ -507,6 +512,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         <div class="crow"><div class="ckey">Architecture</div><div class="cval">Domain-Driven Design · CQRS · multi-tenancy &amp; tenant isolation · idempotency / exactly-once processing · event-driven · Clean Architecture</div></div>
         <div class="crow"><div class="ckey">Web &amp; API</div><div class="cval">ASP.NET Core &amp; Web API · Minimal APIs · gRPC · REST / JSON · MediatR · FluentValidation · Polly</div></div>
         <div class="crow"><div class="ckey">Platform</div><div class="cval"><b>Azure in production</b> — the request path, event-driven work, reliable delivery, settlement · Azure DevOps &amp; CI/CD · Docker · AKS · Azure Service Bus / RabbitMQ · feature flags · Application Insights / Serilog</div></div>
+        <div class="crow"><div class="ckey">Security</div><div class="cval"><b>SOX-aligned data segregation</b> · tenant isolation enforced by construction · OAuth2 / OpenID Connect / JWT · RBAC · POPIA / GDPR-aware design · removing live production data from test environments</div></div>
         <div class="crow"><div class="ckey">Analysis</div><div class="cval">Requirements specification (BRS / URS / FRS / TRS) · solution design &amp; architecture · UML modelling · stakeholder translation</div></div>
         <div class="crow"><div class="ckey">AI</div><div class="cval">Agent orchestration with budget governance · multi-model routing · MCP integration · analyzer-enforced quality gates</div></div>
       </div>
@@ -521,6 +527,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         <div class="credrow"><div class="ck">Education</div><div class="cv"><b>National Diploma — Information Technology: Software Development</b> <span class="sub">— Varsity College, 2014–2016</span></div></div>
         <div class="credrow"><div class="ck">Assessment</div><div class="cv">IKM C# Assessment — <b>73rd percentile</b> of all test takers <span class="sub">— assessed twice, six months apart</span></div></div>
         <div class="credrow"><div class="ck">Foundation</div><div class="cv">Nine years professional <b>C#/.NET and SQL Server</b> <span class="sub">— fintech, gaming, banking, supply chain and utilities</span></div></div>
+        <div class="credrow"><div class="ck">Leadership</div><div class="cv">Led teams of <b>1–5 developers</b> <span class="sub">— code review, coding standards, and mentoring toward them</span></div></div>
         <div class="credrow"><div class="ck">Open source</div><div class="cv"><a href="https://github.com/RichardvZyl/CombinatorialOptimiser">CombinatorialOptimiser</a> — a dependency-free .NET optimisation library, 20+ solvers · <a href="https://github.com/RichardvZyl/engineering-standards">engineering-standards</a> — conventions a repository can consume</div></div>
       </div>
     </div>

@@ -416,7 +416,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
           A ledger doesn't get to be <span class="q">nearly</span> <span class="k">correct</span> <span class="q">— not once, not under load, not at three in the morning.</span>
         </p>
         <div class="leadcol reveal">
-          <p>Nine years across <strong>C#/.NET and SQL Server</strong> — roughly five leading teams, three and a half as Solutions Architect. From December 2022 to March 2026 I owned the architecture of a core financial platform at <strong>Raging River</strong> that replaced a legacy banking system, handling deposits and withdrawals across African markets for some of the continent's largest gaming brands. That role ended in March 2026 via voluntary severance during a post-acquisition restructure. Since April 2026 I have been <strong>co-owner and solutions architect at Yuno Technologies</strong>, leading technical delivery across client platforms.</p>
+          <p>Nine years across <strong>C#/.NET and SQL Server</strong> — roughly five leading teams, three and a half as Solutions Architect. From December 2022 to March 2026 I led the architecture of a core financial platform at <strong>Raging River</strong> that replaced a legacy banking system, handling deposits and withdrawals across African markets for some of the continent's largest gaming brands. That role ended in March 2026 via voluntary severance during a post-acquisition restructure. Since April 2026 I have been <strong>co-owner and solutions architect at Yuno Technologies</strong>, leading technical delivery across client platforms.</p>
           <p>My specialism is the part that has to be right: <strong>concurrency, consistency, contention</strong>. Exactly-once withdrawal processing on a live ledger. Multi-tenancy that satisfies SOX-aligned segregation. Partitioning strategies that keep hot tables fast while meeting multi-year regulatory retention.</p>
           <p>Requirements and solution design run through all of it. I've written business, user, functional and technical specifications since 2017 — pitched to whichever audience had to sign them off — and I work most naturally where a business problem becomes a domain model, an API and a data design.</p>
         </div>
@@ -445,7 +445,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
 
         <article class="prob reveal">
           <p class="psit">The whole business runs on a legacy platform nobody wants to touch.</p>
-          <p class="pans">Rewrites are where companies go to die. I replaced a legacy banking platform with a modern white-label engine <b>while it kept trading</b> — moving the processing flow across piece by piece, never taking the business dark.</p>
+          <p class="pans">Rewrites are where companies go to die. I led the architecture that replaced a legacy banking platform with a modern white-label engine <b>while it kept trading</b> — moving the processing flow across piece by piece, never taking the business dark.</p>
         </article>
 
         <article class="prob reveal">
@@ -455,7 +455,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
 
         <article class="prob reveal">
           <p class="psit">The ledger has to stay fast, and you have to keep seven years of it.</p>
-          <p class="pans">Those two requirements fight each other. I use <b>tiered partitioning with progressive cold-archiving</b> — detaching yearly partitions onto colder servers — plus in-memory tables and tuned fill factors on the high-contention paths. Regulatory retention met; the hot tables never feel it.</p>
+          <p class="pans">Those two requirements fight each other. I used <b>tiered partitioning with progressive cold-archiving</b> — detaching yearly partitions onto colder servers — with in-memory tables on the high-contention paths, and fill factors tuned separately to reduce last-page insert contention. Regulatory retention met; the hot tables never felt it.</p>
         </article>
 
         <article class="prob reveal">
@@ -489,13 +489,8 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         </article>
 
         <article class="prob reveal">
-          <p class="psit">Field meters have to report usage, and the count has to be the count.</p>
-          <p class="pans">At MeterMo I worked the metering estate for <b>electricity, water and gas</b> — device telemetry and usage integrity: readings that must arrive, persist, and not be double-counted. Two APIs, two cross-platform field apps, two websites; capture and reporting from field devices.</p>
-        </article>
-
-        <article class="prob reveal">
-          <p class="psit">The optimiser should pick a solver the instance can actually finish.</p>
-          <p class="pans">I published <b>CombinatorialOptimiser</b> — a dependency-free .NET library with 20+ exact, construction, improvement and metaheuristic solvers, and a registry that selects by instance size so algorithm choice is an explicit complexity decision, not a default.</p>
+          <p class="psit">Six projects on a dead build server, and the frameworks have aged out.</p>
+          <p class="pans">At MeterMo I moved <b>six projects off Team Foundation Server onto Azure DevOps</b> and brought them up to current frameworks and package versions — then kept two APIs, two cross-platform field apps and two websites running across an electricity, water and gas metering estate. Unglamorous, and the kind of work that decides whether the next feature is possible.</p>
         </article>
 
       </div>
@@ -507,7 +502,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
     <div class="bar">
       <h2 class="tag" data-n="03">What I work in</h2>
       <div class="caps reveal">
-        <div class="crow"><div class="ckey">Languages</div><div class="cval"><b>C# / .NET 8+</b> · <b>T-SQL</b> · TypeScript · JavaScript · <b>Node.js</b> (SSR where that was the production problem) · PostgreSQL</div></div>
+        <div class="crow"><div class="ckey">Languages</div><div class="cval"><b>C# / .NET 8+</b> · <b>T-SQL</b> · TypeScript · JavaScript · <b>Node.js</b> · PostgreSQL</div></div>
         <div class="crow"><div class="ckey">Data</div><div class="cval"><b>SQL Server &amp; Azure SQL at scale</b> — execution-plan tuning, indexing, isolation levels and deadlock resolution · table partitioning &amp; archiving · In-Memory OLTP · Entity Framework Core · Redis</div></div>
         <div class="crow"><div class="ckey">Architecture</div><div class="cval">Domain-Driven Design · CQRS · multi-tenancy &amp; tenant isolation · idempotency / exactly-once processing · event-driven · Clean Architecture</div></div>
         <div class="crow"><div class="ckey">Web &amp; API</div><div class="cval">ASP.NET Core &amp; Web API · Minimal APIs · gRPC · REST / JSON · MediatR · FluentValidation · Polly</div></div>

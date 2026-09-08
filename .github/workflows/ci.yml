@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Verify site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify index.html
+        run: |
+          python3 <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import sys
+
+          path = Path("index.html")
+          if not path.is_file():
+              sys.exit("index.html is missing")
+
+          html = path.read_text(encoding="utf-8")
+          if not html.strip():
+              sys.exit("index.html is empty")
+
+          if "<!doctype html>" not in html.lower():
+              sys.exit("index.html is missing a <!DOCTYPE html> declaration")
+
+          class StructureParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.start = set()
+                  self.end = set()
+
+              def handle_starttag(self, tag, attrs):
+                  self.start.add(tag.lower())
+
+              def handle_endtag(self, tag):
+                  self.end.add(tag.lower())
+
+          parser = StructureParser()
+          parser.feed(html)
+
+          missing = []
+          for tag in ("html", "head", "body"):
+              if tag not in parser.start:
+                  missing.append(f"<{tag}>")
+              if tag not in parser.end:
+                  missing.append(f"</{tag}>")
+
+          if missing:
+              sys.exit(
+                  "index.html is missing required tags: " + ", ".join(missing)
+              )
+
+          print(
+              "index.html exists, is non-empty, and has html/head/body structure"
+          )
+          PY

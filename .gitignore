@@ -1,0 +1,20 @@
+# This repository is PUBLIC and every tracked file is served by GitHub Pages.
+# Richard-van-Zyl-CV.pdf / .docx are published deliberately; nothing else
+# career-related belongs here.
+
+# Never publish source evidence or working documents.
+*.private.md
+*.private.*
+.career-source/
+payslip*
+Payslip*
+PAYSLIP*
+*ayslip*
+*eference*etter*
+*VSP*
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

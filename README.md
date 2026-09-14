@@ -10,6 +10,14 @@ Served by GitHub Pages from the default branch at <https://richardvzyl.github.io
 Single self-contained page. `index.html` holds the markup, styles and the WebGL background
 inline — no build step, no bundler, nothing to install.
 
+Downloadable artefacts at the site root (linked from the hero and contact section):
+
+- `Richard-van-Zyl-CV.pdf`
+- `Richard-van-Zyl-Skills-Overview.pdf`
+
+Sources live in [`curriculum-vitae`](https://github.com/RichardvZyl/curriculum-vitae); regenerate
+from `CV.md` and `SKILLS-OVERVIEW.md` there when content changes.
+
 | Dependency | Source | Purpose |
 |---|---|---|
 | Bricolage Grotesque, Geist, Geist Mono | Google Fonts | Typography |

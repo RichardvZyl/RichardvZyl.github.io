@@ -328,10 +328,11 @@ h1 .sur{ color:var(--brass); }
 .clink:hover .sub{ color:inherit; }
 .ph{ color:var(--brass-hi); border-bottom:1px dashed rgba(228,200,119,.4); }
 .availrow{
-  margin-top:40px; display:flex; align-items:center; gap:12px;
+  margin-top:40px; display:flex; align-items:flex-start; gap:12px;
   font-family:var(--mono); font-size:12px; letter-spacing:.05em; color:var(--muted);
+  max-width:72ch; line-height:1.55;
 }
-.availrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--living); box-shadow:0 0 10px var(--living); }
+.availrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--living); box-shadow:0 0 10px var(--living); flex-shrink:0; margin-top:.45em; }
 
 /* ---------- footer ---------- */
 footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:relative; z-index:2; }
@@ -406,7 +407,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
     <div class="herometa">
       <span><b>Based</b> · Pretoria, South Africa</span>
       <span><b>Domain</b> · High-throughput multi-tenant financial systems</span>
-      <span class="pill">● Open to architecture &amp; technical leadership roles</span>
+      <span class="pill">● Open to Solutions Architect, Technical Lead, and senior hands-on backend roles where I still build, still mentor, and still have a say in architecture, technology, and design.</span>
       <span><a href="Richard-van-Zyl-CV.pdf" download><b>CV</b> (PDF)</a></span>
       <span><a href="Richard-van-Zyl-Skills-Overview.pdf" download><b>Skills overview</b> (PDF)</a></span>
     </div>
@@ -582,7 +583,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         <a class="clink" href="Richard-van-Zyl-CV.pdf" download>CV <span class="sub">(PDF)</span><span class="ar">↓</span></a>
         <a class="clink" href="Richard-van-Zyl-Skills-Overview.pdf" download>Skills overview <span class="sub">(PDF)</span><span class="ar">↓</span></a>
       </div>
-      <div class="availrow"><span class="dot"></span>Pretoria, South Africa · open to Solutions Architect, Technical Lead and backend architecture roles</div>
+      <div class="availrow"><span class="dot"></span>Pretoria, South Africa · Open to Solutions Architect, Technical Lead, and senior hands-on backend roles where I still build, still mentor, and still have a say in architecture, technology, and design.</div>
     </div>
   </section>
 

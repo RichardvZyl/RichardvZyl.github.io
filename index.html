@@ -187,9 +187,10 @@ h1 .sur{ color:var(--brass); }
 .herodl{ display:flex; flex-wrap:wrap; gap:10px; width:100%; margin-top:2px; }
 .dlink{
   color:var(--brass-hi); text-decoration:none;
+  font-size:13px; letter-spacing:.02em;
   display:inline-flex; align-items:center; gap:8px;
   min-height:44px; padding:10px 18px;
-  border:1px solid var(--line); border-radius:10px;
+  border:1px solid rgba(200,162,75,0.35); border-radius:10px;
   background:rgba(15,29,25,0.55);
   transition:color .25s ease, background .25s ease, border-color .25s ease;
 }
@@ -200,7 +201,7 @@ h1 .sur{ color:var(--brass); }
 .cue{
   position:absolute; left:var(--pad); bottom:30px; display:flex; align-items:center; gap:11px;
   font-family:var(--mono); font-size:10.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--muted);
-  opacity:0; transition:opacity 1s ease 1.2s;
+  opacity:0; transition:opacity 1s ease 1.2s; pointer-events:none;
 }
 .loaded .cue{ opacity:.8; }
 .cue .rail{ width:1px; height:34px; background:linear-gradient(var(--brass),transparent); position:relative; overflow:hidden; }
@@ -328,7 +329,7 @@ h1 .sur{ color:var(--brass); }
 .clinks{ display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; }
 .clink{
   font-family:var(--mono); font-size:13px; letter-spacing:.02em;
-  border:1px solid var(--line); border-radius:100px;
+  border:1px solid rgba(200,162,75,0.35); border-radius:100px;
   min-height:48px; padding:14px 24px;
   color:var(--paper); display:inline-flex; align-items:center; gap:10px;
   transition:background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;

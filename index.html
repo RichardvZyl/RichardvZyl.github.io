@@ -68,14 +68,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
+  /*
+    Palette logic (dark UI, analogous accents):
+    - Surfaces stay in a green-black void family (hue ~160°).
+    - Accents: warm brass (analogous to paper) + cool living teal (analogous to void).
+    - Text uses warm neutrals on the paper→void axis — not cool mid-greys.
+      Cool greys (#8A9691 / #5C6B6B) sit near the WebGL particle slate and
+      disappear against additive brass/teal glow; warm lifted neutrals keep
+      hierarchy without camouflaging into the backdrop.
+    Contrast targets vs --void (WCAG): paper ~15:1, soft ~11:1, muted ~8:1, slate ~6:1.
+  */
   --void:#0B1512;
   --panel:#0F1D19;
-  --slate:#5C6B6B;
+  --slate:#8B9A94;   /* section numerals — lifted from #5C6B6B */
   --brass:#C8A24B;
   --brass-hi:#E4C877;
   --living:#42D6B4;
-  --paper:#EDE9DF;
-  --muted:#8A9691;
+  --paper:#EDE9DF;   /* primary text */
+  --soft:#CDC8BB;    /* secondary body (domain, location, leads, answers) */
+  --muted:#B3AEA0;   /* tertiary chrome (nav idle, cues, footer, PDF hints) */
   --line:rgba(200,162,75,0.16);
   --line-soft:rgba(237,233,223,0.08);
 
@@ -178,7 +189,7 @@ h1 .sur{ color:var(--brass); }
 .thesis em{ font-style:italic; color:var(--brass-hi); }
 .herometa{
   display:flex; flex-wrap:wrap; gap:12px 30px; margin-top:44px;
-  font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--muted);
+  font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--soft);
   opacity:0; transition:opacity 1s ease .9s;
 }
 .loaded .herometa{ opacity:1; }
@@ -228,10 +239,10 @@ h1 .sur{ color:var(--brass); }
   font-size:clamp(1.5rem, 4.3vw, 3.15rem); line-height:1.14; letter-spacing:-.02em;
   max-width:22ch;
 }
-.statement .q{ color:var(--muted); }
+.statement .q{ color:var(--soft); }
 .statement .k{ color:var(--brass-hi); }
 .introgrid{ display:grid; grid-template-columns:1fr; gap:54px; }
-.leadcol p{ color:var(--muted); font-size:clamp(1rem,1.5vw,1.12rem); max-width:46ch; margin-top:22px; }
+.leadcol p{ color:var(--soft); font-size:clamp(1rem,1.5vw,1.12rem); max-width:46ch; margin-top:22px; }
 .leadcol p strong{ color:var(--paper); font-weight:500; }
 
 /* ---------- problems ---------- */
@@ -256,7 +267,7 @@ h1 .sur{ color:var(--brass); }
 .prob:hover .psit{ color:var(--brass-hi); }
 .psit::before{ content:"\201C"; color:var(--brass); }
 .psit::after{ content:"\201D"; color:var(--brass); }
-.pans{ color:var(--muted); max-width:58ch; font-size:1.02rem; line-height:1.6; }
+.pans{ color:var(--soft); max-width:58ch; font-size:1.02rem; line-height:1.6; }
 .pans b{ color:var(--paper); font-weight:500; }
 
 /* ---------- origin band ---------- */
@@ -281,7 +292,7 @@ h1 .sur{ color:var(--brass); }
 .credrow .ck{ font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); padding-top:2px; }
 .credrow .cv{ color:var(--paper); font-size:clamp(1rem,1.7vw,1.16rem); font-weight:300; line-height:1.5; }
 .credrow .cv b{ font-weight:500; }
-.credrow .cv .sub{ color:var(--muted); }
+.credrow .cv .sub{ color:var(--soft); }
 @media (max-width:640px){ .credrow{ grid-template-columns:1fr; gap:5px; } }
 
 /* ---------- capabilities ---------- */
@@ -304,7 +315,7 @@ h1 .sur{ color:var(--brass); }
 .pr:hover{ border-color:var(--line); transform:translateY(-4px); background:rgba(15,29,25,0.85); }
 .pr .idx{ font-family:var(--mono); font-size:12px; color:var(--brass); letter-spacing:.1em; }
 .pr h4{ font-family:var(--display); font-weight:600; font-size:1.35rem; letter-spacing:-.01em; margin:16px 0 9px; }
-.pr p{ color:var(--muted); font-size:.96rem; }
+.pr p{ color:var(--soft); font-size:.96rem; }
 
 /* ---------- ventures ---------- */
 .vent{ display:grid; grid-template-columns:1fr; gap:22px; }
@@ -317,7 +328,7 @@ h1 .sur{ color:var(--brass); }
 .vcard .vh{ display:flex; align-items:center; gap:14px; }
 .vcard h3{ font-family:var(--display); font-weight:700; font-size:clamp(1.5rem,3vw,2rem); letter-spacing:-.02em; }
 .vcard .role{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--brass); }
-.vcard p{ color:var(--muted); max-width:54ch; }
+.vcard p{ color:var(--soft); max-width:54ch; }
 
 /* ---------- contact ---------- */
 .contact{ text-align:left; }
@@ -342,7 +353,7 @@ h1 .sur{ color:var(--brass); }
 .ph{ color:var(--brass-hi); border-bottom:1px dashed rgba(228,200,119,.4); }
 .availrow{
   margin-top:40px; display:flex; align-items:flex-start; gap:12px;
-  font-family:var(--mono); font-size:12px; letter-spacing:.05em; color:var(--muted);
+  font-family:var(--mono); font-size:12px; letter-spacing:.05em; color:var(--soft);
   max-width:72ch; line-height:1.55;
 }
 .availrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--living); box-shadow:0 0 10px var(--living); flex-shrink:0; margin-top:.45em; }

@@ -77,6 +77,8 @@
       disappear against additive brass/teal glow; warm lifted neutrals keep
       hierarchy without camouflaging into the backdrop.
     Contrast targets vs --void (WCAG): paper ~15:1, soft ~11:1, muted ~8:1, slate ~6:1.
+    Hero meta sits on the particle field (no sheet) — values use --paper; labels use
+    brass chroma for hierarchy instead of dropping value into the particle fog.
   */
   --void:#0B1512;
   --panel:#0F1D19;
@@ -85,8 +87,8 @@
   --brass-hi:#E4C877;
   --living:#42D6B4;
   --paper:#EDE9DF;   /* primary text */
-  --soft:#CDC8BB;    /* secondary body (domain, location, leads, answers) */
-  --muted:#B3AEA0;   /* tertiary chrome (nav idle, cues, footer, PDF hints) */
+  --soft:#D4CFC2;    /* secondary body on sheet panels (~12:1 on void) */
+  --muted:#C4BFB2;   /* tertiary chrome — warm, lifted; was cool #8A9691 */
   --line:rgba(200,162,75,0.16);
   --line-soft:rgba(237,233,223,0.08);
 
@@ -189,11 +191,12 @@ h1 .sur{ color:var(--brass); }
 .thesis em{ font-style:italic; color:var(--brass-hi); }
 .herometa{
   display:flex; flex-wrap:wrap; gap:12px 30px; margin-top:44px;
-  font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--soft);
+  font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:var(--paper);
   opacity:0; transition:opacity 1s ease .9s;
 }
 .loaded .herometa{ opacity:1; }
-.herometa b{ color:var(--paper); font-weight:500; }
+/* Labels use brass chroma (not lower value) so hierarchy survives the particle field */
+.herometa b{ color:var(--brass-hi); font-weight:500; }
 .herometa .pill{ color:var(--living); }
 .herodl{ display:flex; flex-wrap:wrap; gap:10px; width:100%; margin-top:2px; }
 .dlink{

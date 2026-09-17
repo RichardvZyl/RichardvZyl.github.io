@@ -48,6 +48,8 @@ FORBIDDEN = [
     ("unfalsifiable",       r"exceed\w*\s+(those\s+of\s+)?conventional banking|millions of (users|transactions)",
                             "cannot be substantiated"),
     ("personality test",    r"DISC\s*&|Values Index|\bENTP\b",  "public-CV noise"),
+    ("unowned: cluster orch", r"\bAKS\b|\bKubernetes\b|\bK8s\b",
+                            "no cluster-orchestration skill; Docker and containerisation stay"),
 
     # --- Security disclosure about a former employer ---
     ("security disclosure", r"operator proxy|hammer the ledger|watched that happen",

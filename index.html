@@ -415,6 +415,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
       <a href="#capabilities">Capabilities</a>
       <a href="#credentials">Credentials</a>
       <a href="#approach">Approach</a>
+      <a href="#ai">AI</a>
       <a href="#ventures">Now</a>
       <a href="#contact" class="cta">Get in touch</a>
     </nav>
@@ -580,14 +581,31 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
     </div>
   </section>
 
+  <!-- AI -->
+  <section class="section sheet" id="ai" aria-label="AI engineering">
+    <div class="bar">
+      <h2 class="tag" data-n="06">Building with AI</h2>
+      <div class="principles">
+        <div class="pr reveal"><div class="idx">A·01</div><h4>Five assistants, not one bet</h4><p>Claude, GitHub Copilot, Cursor, OpenAI Codex and Grok run side by side as a standing comparison, not a subscription pile. The useful output is a <b>position on where each breaks down</b> — which is what you can't buy. Workflows stay OpenAI API-compatible, so any conformant provider drops in.</p></div>
+        <div class="pr reveal"><div class="idx">A·02</div><h4>Orchestration, not prompting</h4><p>A brief decomposes into a <b>dependency-aware DAG</b>. Each item carries complexity, a preferred model tier and a token budget, then runs in parallel across specialist sub-agents under an overseer that resolves blockers, re-plans failures and downgrades models on cost/performance.</p></div>
+        <div class="pr reveal"><div class="idx">A·03</div><h4>Budgets, or it isn't engineering</h4><p>Sub-agents run inside a declared session budget with pre-flight token and tool-call estimates and a live plan-versus-actual view. Without that control layer, multi-agent work is a bill you discover afterwards.</p></div>
+        <div class="pr reveal"><div class="idx">A·04</div><h4>The gate is analyzer-enforced</h4><p>Output is graded against versioned design guidelines, then enforced: analyzers on, warnings as errors, a tiered diagnostic list and a self-extending recipe book. Mechanical fixes route to cheaper models; only unknown diagnostics and public-API changes escalate.</p></div>
+        <div class="pr reveal"><div class="idx">A·05</div><h4>Review on two axes</h4><p><i>Does this follow our standards and ADRs?</i> is a different question from <i>does this do what was asked?</i> Both run as parallel sub-agents and report side by side, because collapsing them into one verdict hides the disagreement that matters.</p></div>
+        <div class="pr reveal"><div class="idx">A·06</div><h4>Decisions captured while planning</h4><p>Architecture decisions become ADRs <b>as the plan forms</b>, not reconstructed from commit messages afterwards. Supersession is additive: the old record stays, marked, so the reasoning survives the change.</p></div>
+        <div class="pr reveal"><div class="idx">A·07</div><h4>Guardrails that have caught things</h4><p>A content guard scans every tracked file for claims previously removed on purpose, third-party identity and credentials, and PII. It exists because each of those actually reached a public repo once. Tested against injected failures, not just a green run.</p></div>
+        <div class="pr reveal"><div class="idx">A·08</div><h4>Watching the ceiling move</h4><p>A standing evaluation of agent infrastructure beyond the mainstream assistants — agent frameworks, model-routing layers, and persistent memory and context systems — to see where context persistence, routing economics and agent autonomy actually top out, ahead of it becoming standard.</p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- VENTURES -->
   <section class="section sheet" id="ventures" aria-label="Now">
     <div class="bar">
-      <h2 class="tag" data-n="06">Now</h2>
+      <h2 class="tag" data-n="07">Now</h2>
       <div class="vent">
         <div class="vcard reveal">
           <div class="vh"><h3>Yuno Technologies</h3></div>
-          <span class="role">Co-owner / Solutions Architect &middot; Apr 2026 – present &middot; 50%</span>
+          <span class="role">Co-owner / Solutions Architect &middot; Apr 2026 – present</span>
           <p>A South African digital consultancy. I hold half the business and lead its technical delivery — architecture, backend engineering and security design across client platforms.</p>
           <p><b>Current production architecture:</b> a four-plane deployment topology with one-way initiation between planes — public edge behind CDN and WAF, SPA plane with a backend-for-frontend holding the session rather than the tokens, application plane owning the signing key, and a <b>response-only identity plane</b> on Keycloak issuing OIDC/JWT — plus a containerised Django and PostgreSQL platform across four environments (nginx edge, Redis, Azure Functions and Blob Storage, with Prometheus, Grafana and ELK). Each plane deploys independently with its own secrets, identity and network boundary. <b>Phase 2 / planned:</b> mutual TLS and SPIFFE/SPIRE workload identities at the service-mesh boundary for stronger service-to-service isolation, behind a documented interim rather than forcing a Kubernetes-shaped stack onto the first release. <b>Under evaluation:</b> moving the banking-core plane off shared-kernel containers onto <b>KVM-backed microVM isolation</b> — hardware-level separation, so a container escape in an adjacent workload cannot reach the ledger.</p>
         </div>
@@ -603,7 +621,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
   <!-- CONTACT -->
   <section class="section sheet contact" id="contact" aria-label="Contact">
     <div class="bar">
-      <h2 class="tag" data-n="07">Contact</h2>
+      <h2 class="tag" data-n="08">Contact</h2>
       <p class="bighello reveal">Let's talk about<br>the <span class="g">hard part</span>.</p>
       <div class="clinks reveal">
         <a class="clink" href="mailto:richardvzyl@gmail.com"><span class="ph">richardvzyl@gmail.com</span><span class="ar">↗</span></a>

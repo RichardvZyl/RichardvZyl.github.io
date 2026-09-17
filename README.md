@@ -10,13 +10,14 @@ Served by GitHub Pages from the default branch at <https://richardvzyl.github.io
 Single self-contained page. `index.html` holds the markup, styles and the WebGL background
 inline — no build step, no bundler, nothing to install.
 
-Downloadable artefacts at the site root (linked from the hero and contact section):
+The CV and Skills Overview PDFs are **not** kept here. They live in
+[`curriculum-vitae`](https://github.com/RichardvZyl/curriculum-vitae) under `downloads/`, next to
+the `CV.md` and `SKILLS-OVERVIEW.md` that generate them, and the hero and contact buttons link
+straight there. GitHub serves those raw URLs as `application/octet-stream`, so the buttons still
+download rather than opening in the browser.
 
-- `Richard-van-Zyl-CV.pdf`
-- `Richard-van-Zyl-Skills-Overview.pdf`
-
-Sources live in [`curriculum-vitae`](https://github.com/RichardvZyl/curriculum-vitae); regenerate
-from `CV.md` and `SKILLS-OVERVIEW.md` there when content changes.
+One copy, in the repo that owns the source — a second copy here would silently fall behind the
+next regeneration, which is exactly what happened before.
 
 | Dependency | Source | Purpose |
 |---|---|---|

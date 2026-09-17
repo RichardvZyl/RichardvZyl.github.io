@@ -47,7 +47,7 @@ FORBIDDEN = [
     ("dropped: Event Sourcing", r"Event Sourcing",          "mechanism is attempt records + rowversion"),
     ("unfalsifiable",       r"exceed\w*\s+(those\s+of\s+)?conventional banking|millions of (users|transactions)",
                             "cannot be substantiated"),
-    ("personality test",    r"DISC\s*&|Values Index|ENTP",  "public-CV noise"),
+    ("personality test",    r"DISC\s*&|Values Index|\bENTP\b",  "public-CV noise"),
 
     # --- Security disclosure about a former employer ---
     ("security disclosure", r"operator proxy|hammer the ledger|watched that happen",
@@ -68,7 +68,7 @@ FORBIDDEN = [
     ("merge conflict",      r"^<{7} |^={7}$|^>{7} ",        "unresolved conflict markers"),
 ]
 
-SKIP_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".ico", ".pdf", ".docx", ".woff", ".woff2")
+SKIP_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".ico", ".docx", ".woff", ".woff2")
 # The guard describes what it forbids, so it would always match itself.
 SKIP_PATHS = (".github/workflows/", "scripts/content-guard.py")
 
@@ -83,12 +83,31 @@ def tracked_files():
         yield f
 
 
+def read_text(path):
+    """A published PDF is what a reader actually downloads, so it gets scanned too.
+
+    Diff tools show it as `(binary)` and the eye never lands on it, which makes it
+    the easiest place for something already removed from the markup to survive.
+    A missing extractor fails loudly rather than quietly waving the file through.
+    """
+    if path.lower().endswith(".pdf"):
+        try:
+            out = subprocess.run(["pdftotext", "-layout", path, "-"],
+                                 capture_output=True, text=True, check=True)
+            return out.stdout
+        except (OSError, subprocess.CalledProcessError):
+            print(f"::error file={path}::cannot extract text - install poppler-utils "
+                  f"so the guard can read published PDFs")
+            sys.exit(1)
+    return open(path, encoding="utf-8", errors="replace").read()
+
+
 def main():
     failures = []
     scanned = 0
     for path in tracked_files():
         try:
-            text = open(path, encoding="utf-8", errors="replace").read()
+            text = read_text(path)
         except OSError:
             continue
         scanned += 1

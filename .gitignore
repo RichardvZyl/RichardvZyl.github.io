@@ -1,0 +1,25 @@
+# This repository is PUBLIC and every tracked file is served by GitHub Pages.
+# Nothing career-related belongs here: the CV and Skills Overview PDFs are
+# published from the curriculum-vitae repo and linked, not copied.
+
+# Never publish source evidence or working documents.
+*.private.md
+*.private.*
+.career-source/
+payslip*
+Payslip*
+PAYSLIP*
+*ayslip*
+*eference*etter*
+*VSP*
+
+# Career artefacts live in the curriculum-vitae repo, not here.
+*.pdf
+*.docx
+*.doc
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

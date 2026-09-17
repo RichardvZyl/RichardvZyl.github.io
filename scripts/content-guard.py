@@ -62,6 +62,8 @@ FORBIDDEN = [
     # --- Superseded employment facts ---
     ("stale employment",    r"seeking new challenges|recruitment agency|technical screening",
                             "the venture was never launched; the reason was stale"),
+    ("double-dip Yuno",     r"Half-owner|half the business|\bCo-owner\b",
+                            "Yuno is a side-project stakeholder, partner-operated; not a second job"),
 
     # --- Self-deprecation ---
     ("self-deprecating",    r"unglamorous",                 "a reader decides that, not the author"),

@@ -47,7 +47,7 @@ FORBIDDEN = [
     ("dropped: Event Sourcing", r"Event Sourcing",          "mechanism is attempt records + rowversion"),
     ("unfalsifiable",       r"exceed\w*\s+(those\s+of\s+)?conventional banking|millions of (users|transactions)",
                             "cannot be substantiated"),
-    ("personality test",    r"DISC\s*&|Values Index|ENTP",  "public-CV noise"),
+    ("personality test",    r"DISC\s*&|Values Index|\bENTP\b",  "public-CV noise"),
 
     # --- Security disclosure about a former employer ---
     ("security disclosure", r"operator proxy|hammer the ledger|watched that happen",

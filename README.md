@@ -17,7 +17,8 @@ straight there. GitHub serves those raw URLs as `application/octet-stream`, so t
 download rather than opening in the browser.
 
 One copy, in the repo that owns the source — a second copy here would silently fall behind the
-next regeneration, which is exactly what happened before.
+next regeneration, which is exactly what happened before. Word/DOCX may exist for local editing
+in the CV repo but is gitignored and **not** linked from this site.
 
 | Dependency | Source | Purpose |
 |---|---|---|

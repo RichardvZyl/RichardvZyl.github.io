@@ -10,15 +10,20 @@ Served by GitHub Pages from the default branch at <https://richardvzyl.github.io
 Single self-contained page. `index.html` holds the markup, styles and the WebGL background
 inline — no build step, no bundler, nothing to install.
 
-The CV and Skills Overview PDFs are **not** kept here. They live in
-[`curriculum-vitae`](https://github.com/RichardvZyl/curriculum-vitae) under `downloads/`, next to
-the `CV.md` and `SKILLS-OVERVIEW.md` that generate them, and the hero and contact buttons link
-straight there. GitHub serves those raw URLs as `application/octet-stream`, so the buttons still
-download rather than opening in the browser.
+The CV and skills PDFs are **not** kept here. They live in
+[`curriculum-vitae`](https://github.com/RichardvZyl/curriculum-vitae) under `downloads/`, and the
+hero and contact buttons link straight there:
 
-One copy, in the repo that owns the source — a second copy here would silently fall behind the
-next regeneration, which is exactly what happened before. Word/DOCX may exist for local editing
-in the CV repo but is gitignored and **not** linked from this site.
+| Download | Artefact |
+|---|---|
+| CV | Single narrative PDF |
+| Skills overview | **Condensed** skills PDF |
+| Skills matrix | **Full** skills PDF |
+
+GitHub serves those raw URLs as `application/octet-stream`, so the buttons still download rather
+than opening in the browser. One copy, in the repo that owns the source — a second copy here would
+silently fall behind the next regeneration. Word/DOCX may exist for local editing in the CV repo
+but is gitignored and **not** linked from this site.
 
 | Dependency | Source | Purpose |
 |---|---|---|

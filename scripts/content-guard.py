@@ -48,6 +48,8 @@ FORBIDDEN = [
     ("unfalsifiable",       r"exceed\w*\s+(those\s+of\s+)?conventional banking|millions of (users|transactions)",
                             "cannot be substantiated"),
     ("personality test",    r"DISC\s*&|Values Index|\bENTP\b",  "public-CV noise"),
+    ("unowned: cluster orch", r"\bAKS\b|\bKubernetes\b|\bK8s\b",
+                            "no cluster-orchestration skill; Docker and containerisation stay"),
 
     # --- Security disclosure about a former employer ---
     ("security disclosure", r"operator proxy|hammer the ledger|watched that happen",
@@ -60,6 +62,8 @@ FORBIDDEN = [
     # --- Superseded employment facts ---
     ("stale employment",    r"seeking new challenges|recruitment agency|technical screening",
                             "the venture was never launched; the reason was stale"),
+    ("double-dip Yuno",     r"Half-owner|half the business|\bCo-owner\b",
+                            "Yuno is a side-project stakeholder, partner-operated; not a second job"),
 
     # --- Self-deprecation ---
     ("self-deprecating",    r"unglamorous",                 "a reader decides that, not the author"),

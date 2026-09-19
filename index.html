@@ -308,6 +308,8 @@ h1 .sur{ color:var(--brass); }
 .ckey{ font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--brass); padding-top:3px; }
 .cval{ color:var(--paper); font-size:clamp(1rem,1.7vw,1.16rem); font-weight:300; line-height:1.5; }
 .cval b{ font-weight:500; }
+.cmore{ display:inline-block; margin-left:.35em; color:var(--brass); text-decoration:none; border-bottom:1px solid currentColor; white-space:nowrap; }
+.cmore:hover,.cmore:focus-visible{ color:var(--paper); }
 
 /* ---------- approach ---------- */
 .principles{ display:grid; grid-template-columns:1fr; gap:2px; }
@@ -548,7 +550,7 @@ footer{ border-top:1px solid var(--line-soft); padding-block:34px; position:rela
         <div class="crow"><div class="ckey">Observability</div><div class="cval"><b>New Relic</b> — release tracking wired through the DevOps pipeline, key-transaction instrumentation, alerting into MS Teams · OpenTelemetry · Grafana · Graylog over UDP · ActiveXperts · Application Insights / Serilog</div></div>
         <div class="crow"><div class="ckey">Security</div><div class="cval"><b>SOX-aligned data segregation</b> · tenant isolation enforced by construction · OAuth2 / OpenID Connect / JWT · RBAC · POPIA / GDPR-aware design · removing live production data from test environments</div></div>
         <div class="crow"><div class="ckey">Analysis</div><div class="cval">Requirements specification (BRS / URS / FRS / TRS) · solution design &amp; architecture · UML modelling · stakeholder translation</div></div>
-        <div class="crow"><div class="ckey">AI</div><div class="cval">Agent orchestration with budget governance · multi-model routing · MCP integration · analyzer-enforced quality gates</div></div>
+        <div class="crow"><div class="ckey">AI</div><div class="cval">Five-assistant comparison harness · <b>DAG orchestration</b> with multi-model routing · budget governance with plan-versus-actual tracking · analyzer-enforced quality gates · two-axis review (standards / spec) · ADR capture while planning · content guard · MCP tooling with a ~30-skill custom plugin <a class="cmore" href="#ai">See Building with AI →</a></div></div>
       </div>
     </div>
   </section>

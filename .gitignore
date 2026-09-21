@@ -23,3 +23,6 @@ PAYSLIP*
 Thumbs.db
 .vscode/
 .idea/
+
+# Generated context render - re-derives from workspace contents.
+live-context.md

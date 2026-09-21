@@ -26,3 +26,7 @@ Thumbs.db
 
 # Generated context render - re-derives from workspace contents.
 live-context.md
+
+# Per-session git worktrees live inside the repo because the parent
+# directory is outside the folder shared with agent sessions.
+.worktrees/

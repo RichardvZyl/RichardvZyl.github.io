@@ -30,3 +30,11 @@ live-context.md
 # Per-session git worktrees live inside the repo because the parent
 # directory is outside the folder shared with agent sessions.
 .worktrees/
+
+# --- Content-guard private pattern set -------------------------------------
+# This repo is public and Pages serves every tracked file, so the guard must
+# not carry the values it checks for. Injected in CI from a repository secret.
+.content-guard-patterns.json
+
+__pycache__/
+*.pyc

@@ -77,5 +77,18 @@ jobs:
       - name: Install pdftotext
         run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
 
+      - name: Restore private pattern set
+        env:
+          CONTENT_GUARD_PATTERNS_JSON: ${{ secrets.CONTENT_GUARD_PATTERNS }}
+        run: |
+          if [ -z "$CONTENT_GUARD_PATTERNS_JSON" ]; then
+            echo '::error::CONTENT_GUARD_PATTERNS secret is not set - the guard would run without its private patterns'; exit 1
+          fi
+          printf '%s' "$CONTENT_GUARD_PATTERNS_JSON" > .content-guard-patterns.json
+
       - name: Forbidden content
         run: python3 scripts/content-guard.py
+
+      - name: Shred private pattern set
+        if: always()
+        run: rm -f .content-guard-patterns.json

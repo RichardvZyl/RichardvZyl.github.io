@@ -89,6 +89,18 @@ def load_private_patterns():
 
 
 SKIP_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".ico", ".docx", ".woff", ".woff2")
+
+# Paths where the EDITORIAL patterns do not apply - the private set still does.
+#
+# A historical record of why a claim was withdrawn has to name the claim. The PR
+# archive quotes the very phrasings the editorial patterns exist to catch, so
+# enforcing them there would either fail forever or force redactions that delete
+# the point of the document. The guard already exempts itself for the same reason.
+#
+# The private set - identifiers, figures, third-party identity - is enforced here
+# exactly as everywhere else. Those are never acceptable in a tracked file, in a
+# historical record or anywhere else.
+EDITORIAL_EXEMPT_PREFIXES = ("docs/archive/",)
 # The guard describes what it forbids, so it would always match itself.
 SKIP_PATHS = (".github/workflows/", "scripts/content-guard.py")
 
@@ -145,8 +157,9 @@ def main():
         except OSError:
             continue
         scanned += 1
+        active = [r for r in rules if r[3]] if path.startswith(EDITORIAL_EXEMPT_PREFIXES) else rules
         for lineno, line in enumerate(text.splitlines(), 1):
-            for label, pattern, why, is_private in rules:
+            for label, pattern, why, is_private in active:
                 if re.search(pattern, line, re.IGNORECASE | re.MULTILINE):
                     failures.append(
                         (path, lineno, label, why, line.strip()[:110], is_private)

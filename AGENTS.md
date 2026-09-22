@@ -17,6 +17,16 @@
 - Do **not** reuse another project's `.perseus` briefing.
 
 
+## Read WARNING.md first
+
+`WARNING.md` at the repository root lists every trap this repository pair has
+actually sprung - publishing, secret handling, history rewriting, line endings,
+and working alongside other agent sessions - and ends with a pre-push checklist.
+Read it before committing or pushing anything here.
+
+A pre-push hook runs the mechanical half of that checklist. Install it once per
+clone with `git config core.hooksPath .githooks`.
+
 ## Secrets in a public repo
 
 This repository is public and every tracked file is readable; the site repo

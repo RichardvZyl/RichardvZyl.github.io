@@ -16,3 +16,21 @@
 - **Write when:** project-specific status, constraints, architecture notes, and handoff briefing — keep them here, not in the shared Vault, unless they are true cross-repo conventions.
 - Do **not** reuse another project's `.perseus` briefing.
 
+
+## Secrets in a public repo
+
+This repository is public and every tracked file is readable; the site repo
+also *serves* them. Never put a literal secret in a tracked file. That includes
+patterns, tests, fixtures and example data - not just config. A value written
+down in order to detect it is still a value written down, and a detector that
+carries what it detects leaks more than it prevents.
+
+The content guard is built this way: editorial patterns live in
+`scripts/content-guard.py` where they can be reviewed, and anything naming a
+person, an identifier, a figure or a client lives in
+`.content-guard-patterns.json`, which is git-ignored and injected in CI from
+the `CONTENT_GUARD_PATTERNS` repository secret. The guard fails the build if
+that set is missing, and reports private matches as path and line only - never
+the matched text, because Actions logs on a public repo are public.
+
+Full procedure: `docs/security/secret-hygiene.md` in the curriculum-vitae repo.

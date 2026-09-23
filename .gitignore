@@ -38,3 +38,6 @@ live-context.md
 
 __pycache__/
 *.pyc
+
+# --- Agent scratch space (see AGENTS.md) ---
+.temp/

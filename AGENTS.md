@@ -34,3 +34,9 @@ that set is missing, and reports private matches as path and line only - never
 the matched text, because Actions logs on a public repo are public.
 
 Full procedure: `docs/security/secret-hygiene.md` in the curriculum-vitae repo.
+
+## Temporary files
+
+Scratch files an agent creates while working go in `.temp/` at the repository root, never loose in
+the root, and are deleted when the task is done. Anything that regenerates a tracked artefact is
+not scratch: keep it, in its proper place (`scripts/`). `.temp/` is git-ignored.

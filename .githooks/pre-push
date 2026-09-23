@@ -1,0 +1,88 @@
+#!/bin/sh
+# Pre-push gate. Install with:  git config core.hooksPath .githooks
+#
+# Mechanical checks only. The judgement calls live in WARNING.md and are printed
+# at the end for you to confirm.
+
+fail=0
+say() { printf '%s\n' "$*"; }
+bad() { printf '  FAIL  %s\n' "$*"; fail=1; }
+ok()  { printf '  ok    %s\n' "$*"; }
+
+say ""
+say "pre-push checks"
+say "---------------"
+
+# 1. the private pattern set must never be tracked
+if git ls-files --error-unmatch .content-guard-patterns.json >/dev/null 2>&1; then
+  bad ".content-guard-patterns.json is TRACKED - it must never be committed"
+else
+  ok "private pattern set is not tracked"
+fi
+
+# 2. nothing under docs/archive/ should be tracked
+if [ -n "$(git ls-files docs/archive/)" ]; then
+  bad "docs/archive/ is tracked - it is meant to stay local"
+else
+  ok "docs/archive/ is not tracked"
+fi
+
+# 3. no private working documents
+if [ -n "$(git ls-files '*.private.*')" ]; then
+  bad "a *.private.* file is tracked"
+else
+  ok "no *.private.* files tracked"
+fi
+
+# 4. no career artefacts outside the published downloads
+stray=$(git ls-files '*.pdf' '*.docx' '*.doc' | grep -v '^downloads/' || true)
+if [ -n "$stray" ]; then
+  bad "document artefacts tracked outside downloads/:"
+  printf '        %s\n' $stray
+else
+  ok "no stray document artefacts"
+fi
+
+# 5. the guard itself - fails closed if the private set is missing
+if [ -f scripts/content-guard.py ]; then
+  if python scripts/content-guard.py >/tmp/cg.$$ 2>&1 || python3 scripts/content-guard.py >/tmp/cg.$$ 2>&1; then
+    ok "content guard clean ($(head -1 /tmp/cg.$$))"
+  else
+    bad "content guard FAILED:"
+    sed 's/^/        /' /tmp/cg.$$
+  fi
+  rm -f /tmp/cg.$$
+fi
+
+say ""
+if [ "$fail" -ne 0 ]; then
+  say "Push blocked. Fix the failures above, or bypass with --no-verify if you"
+  say "are certain - see WARNING.md for why each check exists."
+  say ""
+  exit 1
+fi
+
+say "Human checklist - WARNING.md has the reasoning:"
+say "  1. no new literal identifier, figure, client or third-party name anywhere tracked"
+say "  2. if the private set changed: all five copies updated, backup included"
+say "  3. generated/exported documents were scanned by the guard before adding"
+say "  4. downloads/ raw URLs still resolve if that area was touched"
+say "  5. PDFs rebuilt if docs/ changed, or deferral stated"
+say "  6. claim changes are defensible against the role dates"
+say "  7. no other agent session has in-flight work on these branches"
+say "  8. pushing to master publishes - immediately, for the site repo"
+say ""
+
+if [ -t 1 ] && [ -r /dev/tty ]; then
+  printf 'Type yes to confirm all eight: '
+  read reply </dev/tty
+  case "$reply" in
+    yes|YES|y|Y) say "confirmed"; say "" ;;
+    *) say "aborted"; say ""; exit 1 ;;
+  esac
+else
+  say "(non-interactive push - checklist not confirmed, mechanical checks passed)"
+  say ""
+fi
+
+exit 0

@@ -13,10 +13,16 @@ PAYSLIP*
 *eference*etter*
 *VSP*
 
-# Career artefacts live in the curriculum-vitae repo, not here.
+# Career artefacts are authored in the curriculum-vitae repo. Since ADR 0006
+# that repo is private, so the three published PDFs are hosted here instead -
+# and ONLY those three. The blanket ban stays so a payslip or a draft export
+# still cannot land by accident.
 *.pdf
 *.docx
 *.doc
+!downloads/Richard-van-Zyl-CV.pdf
+!downloads/Richard-van-Zyl-Skills-Overview.pdf
+!downloads/Richard-van-Zyl-Skills-Matrix.pdf
 
 # Editor / OS noise
 .DS_Store
